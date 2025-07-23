@@ -1,0 +1,135 @@
+import time
+import cv2
+from google.cloud import vision
+import io
+
+# Setup vision client
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "waste-classification-441308-e1823ce93688.json"
+client = vision.ImageAnnotatorClient()
+
+def capture_image():
+    """Capture an image using the laptop's webcam."""
+    cap = cv2.VideoCapture(0)  # Open the default webcam (use 1 for an external webcam if needed)
+    
+    if not cap.isOpened():
+        print("Error: Unable to access the camera.")
+        return None
+    
+    ret, frame = cap.read()  # Read a single frame
+    if not ret:
+        print("Error: Unable to capture an image.")
+        return None
+    
+    image_path = "captured_image.jpg"
+    cv2.imwrite(image_path, frame)  # Save the image to a file
+    cap.release()
+    cv2.destroyAllWindows()
+    
+    return image_path
+
+def analyze_image(image_path):
+    """Analyze the captured image using Google Cloud Vision API."""
+    with io.open(image_path, 'rb') as image_file:
+        content = image_file.read()
+    
+    image = vision.Image(content=content)
+    
+    # Call Google Vision API to detect labels in the image
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+    
+    print('Labels:')
+    for label in labels:
+        print(label.description)
+
+    return labels
+
+# Create the mapping dictionary
+biodegradable_items = ['Organic', 'Food', 'Plant', 'Vegetable', 'Fruit', 'Biodegradable', 'Book', 'Organic waste', 'Organic', 'Food waste', 'Food', 'Vegetable waste', 'Peel', 'Fruit peel', 'Banana peel', 'Apple core', 'Apple', 'Tomato', 'Carrot peel', 'Carrot', 'Onion', 'Onion skin', 'Garlic skin', 'Garlic', 'Patato', 'Potato peel', 'Cucumber peel', 'Cucumber', 'Coconut', 'Coconut shell', 'Coconut husk', 'Leaves', 'Flower', 'Flowers', 'Wood', 'Paper', 'Cardboard', 'Tissue', 'Paper napkin', 'Napkin', 'Cotton', 'Cotton fabric', 'Bamboo', 'Compostable plate', 'Compostable cutlery', 'Paper bag', 'Tea bag', 'Used tea bag', 'Food waste', 'Leftover food', 'Vegetable scraps', 'Fruit peels', 'Fruit scraps', 'Vegetable waste', 'Vegetable peels', 'Food scraps', 'Egg shells', 'Coffee grounds', 'Tea bags', 'Tea leaves', 'Bread', 'Cereal', 'Pasta', 'Rice', 'Dairy products', 'Meat scraps', 'Bones', 'Fish scraps', 'Paper towel', 'Napkins', 'Tissues', 'Paper cups', 'Paper plates', 'Compostable cups', 'Compostable plates', 'Compostable packaging', 'Compostable utensils', 'Cardboard', 'Paper waste', 'Cardboard boxes', 'Notebook paper', 'Recycled paper', 'Leaf litter', 'Dried leaves', 'Branches', 'Flowers', 'Plant waste', 'Grass clippings', 'Soil', 'Wood shavings', 'Sawdust', 'Cotton fabric', 'Wool fabric', 'Linen fabric', 'Natural fibers', 'Compostable bags', 'Bamboo', 'Jute bags', 'Hemp products', 'Cotton swabs', 'Wooden chopsticks', 'Toothpicks', 'Cork', 'Compostable gloves', 'Feathers', 'Hair', 'Nail clippings', 'Burlap', 'Straw', 'Animal waste', 'Pet hair', 'Biodegradable bags', 'Palm leaves', 'Bamboo products', 'Mulch', 'Corn husks', 'Wheat straw', 'Peanut shells', 'Sunflower seeds', 'Rice husks', 'Coconut shells', 'Cotton wool', 'Plant roots', 'Compostable straws', 'Compostable packaging material', 'Wooden stirrers', 'Sugarcane bagasse', 'Palm fiber', 'Coconut fiber', 'Banana peels', 'Orange peels', 'Apple cores', 'Grape stems', 'Stems', 'Plant trimmings', 'Cucumber peels', 'Tomato stems', 'Flower petals', 'Seeds', 'Sugarcane stalks', 'Corn stalks', 'Bamboo sticks', 'Biodegradable cutlery', 'Biodegradable packaging', 'Biodegradable plates', 'Biodegradable cups', 'Natural paper', 'Wood scraps', 'Wood chips', 'Wicker', 'Clay pots', 'Compostable paper', 'Pine needles', 'Natural sponges', 'Cereal grains', 'Popcorn kernels', 'Pistachio shells', 'Orange rinds', 'Vegetable stems', 'Biodegradable containers', 'Compostable containers', 'Compostable paper towels', 'Biodegradable napkins', 'Hemp cloth', 'Compostable labels', 'Biodegradable cotton balls', 'Biodegradable wraps', 'Pressed leaves', 'Pasta scraps', 'Rice paper', 'Wrapping paper', 'Gourds', 'Biodegradable mailers', 'Mushroom stems', 'Natural dyes', 'Flowers', 'Herbs', 'Seasonal trimmings', 'Organic trimmings', 'Eco-friendly cloth', 'Corn starch-based packaging', 'Potato starch-based materials', 'Corn husk packaging', 'Coffee grounds', 'Bread', 'Chapati', 'Roti', 'Idli', 'Food scraps', 'Leftover food', 'Egg shells', 'Fish bones', 'Chicken bones', 'Meat scraps', 'Egg carton', 'Used towel', 'Used cloth', 'Pencil shavings', 'Hair', 'Feathers', 'Soil', 'Mud', 'Plant stem', 'Vegetable stems', 'Herbs', 'Spinach', 'Curry leaves', 'Mint leaves', 'Papaya peel', 'Apple', 'Banana', 'Orange', 'Mango', 'Papaya', 'Guava', 'Grapes', 'Watermelon', 'Muskmelon', 'Pomegranate', 'Pineapple', 'Lemon', 'Lime', 'Chikoo', 'Jackfruit', 'Coconut', 'Custard apple', 'Fig', 'Pear', 'Peach', 'Plum', 'Lychee', 'Kiwi', 'Strawberry', 'Blackberry', 'Blueberry', 'Raspberry', 'Tamarind', 'Amla', 'Cucumber', 'Tomato', 'Onion', 'Potato', 'Garlic', 'Ginger', 'Carrot', 'Radish', 'Beetroot', 'Cabbage', 'Cauliflower', 'Broccoli', 'Spinach', 'Fenugreek', 'Coriander', 'Mint', 'Lettuce', 'Pumpkin', 'Bottle gourd', 'Bitter gourd', 'Ridge gourd', 'Snake gourd', 'Ash gourd', 'Pointed gourd', 'Ivy gourd', 'Drumstick', 'Brinjal', 'Okra', 'Capsicum', 'Chili pepper', 'Green beans', 'Peas', 'Corn', 'Sweet potato', 'Yam', 'Turnip', 'Spring onion', 'Kale', 'Mushroom', 'Celery', 'Zucchini', 'Chayote', 'Leeks', 'Bell pepper', 'Kohlrabi', 'Mustard greens', 'Amaranth leaves', 'Arugula', 'Sweet lime', 'Sapota', 'Mulberry', 'Taro root', 'Mango seed', 'Banana peel', 'Orange peel', 'Pomegranate peel', 'Lemon peel', 'Apple core', 'Papaya seeds', 'Cantaloupe', 'Peach pit', 'Mango pit', 'Jackfruit seed', 'Bitter melon', 'Tindora', 'Karela', 'Squash', 'Garlic skin', 'Ginger peel', 'Carrot tops', 'Beet greens', 'Cauliflower stem', 'Cabbage core', 'Potato peels', 'Onion skin', 'Brinjal stem', 'Okra stem', 'Corn husk', 'Pea pods', 'Mustard leaves', 'Turnip greens', 'Radish greens', 'Mint stalk', 'Celery leaves', 'Pumpkin seeds', 'Melon rind', 'Orange peel', 'Peach pit', 'Kiwi peel', 'Avocado pit', 'Lemon peel', 'Fruit rind', 'Dried flowers', 'Greenery', 'Plant waste', 'Garden waste', 'Grass clippings', 'Used napkins', 'Used paper towel', 'Cotton swab', 'Bamboo toothbrush', 'Dried herbs', 'Sugarcane bagasse', 'Wooden chopsticks', 'Worn clothes', 'Compostable packaging', 'Biodegradable cup', 'Biodegradable plastic', 'Biodegradable packaging', 'Compostable bag']
+    
+non_biodegradable_items =  ['Plastic', 'Metal', 'Non-biodegradable', 'Synthetic', 'Glass', 'Material propertyplastic waste', 'Plastic bag', 'Plastic bottle', 'Plastic container', 'Plastic cap', 'Plastic spoon', 'Plastic fork', 'Plastic knife', 'Plastic cup', 'Plastic plate', 'Plastic straw', 'Plastic wrapper', 'Plastic packaging', 'Plastic lid', 'Polythene', 'Polystyrene', 'Styrofoam', 'Polypropylene', 'Watch', 'Plastic film', 'Plastic sheet', 'Plastic tray', 'Chips packet', 'Pen', 'Biscuit wrapper', 'Chocolate wrapper', 'Plastic food wrapper', 'Plastic packaging tape', 'Aluminum foil', 'Aluminum can', 'Tin can', 'Metal can', 'Glass bottle', 'Glass jar', 'Ceramic', 'Porcelain', 'Stainless steel', 'Iron', 'Steel scrap', 'Electronics', 'E-waste', 'Batteries', 'Phone charger', 'Toothbrush', 'Razor', 'Disposable razor', 'Marker', 'Pen', 'Plastic pen', 'Highlighter', 'Sketch pen', 'Permanent marker', 'Ballpoint pen', 'Sponges', 'Plastic toothbrush', 'Plastic toys', 'Plastic watch', 'Plastic bags', 'Diaper', 'Sanitary pad', 'Plastic gloves', 'Rubber bands', 'Rubber tire', 'Vinyl', 'Pvc pipe', 'Plastic pipe', 'Nylon', 'Polyester', 'Acrylic', 'Spandex', 'Synthetic fabric', 'Balloon', 'Plastic bottle cap', 'Blister pack', 'Cd', 'Dvd', 'Old wires', 'Cables', 'Bottle caps', 'Old toys', 'Plastic comb', 'Plastic storage box', 'Plastic bucket', 'Plastic liner', 'Plastic garbage bag', 'Plastic packaging', 'Plastic wrap', 'Thermal receipt paper', 'Plastic mailer', 'Shoes', 'Clothing', 'Sneakers', 'Rubber gloves', 'Plastic film', 'Bubble wrap', 'Polystyrene foam', 'Plastic cups', 'Styrofoam cups', 'Plastic sheet', 'Plastic packaging film', 'Toothpaste tube', 'Plastic toothpaste container', 'Hair ties', 'Clamshell packaging', 'Plastic tray', 'Toiletry packaging', 'Cosmetic packaging', 'Furniture wrap', 'Plastic tags', 'Disposable cup', 'Single-use plastic', 'Plastic utensils', 'Plastic cutlery', 'Clothing tags', 'Packing peanuts', 'Plastic film wrap', 'Disposable face mask', 'Disposable gloves', 'Synthetic shoes', 'Plastic straws', 'Chips packet', 'Biscuit wrapper', 'Chocolate wrapper', 'Plastic food wrapper', 'Plastic packaging tape', 'Aluminum foil', 'Aluminum can', 'Tin can', 'Metal can', 'Glass bottle', 'Glass jar', 'Ceramic', 'Porcelain', 'Stainless steel', 'Iron', 'Steel scrap', 'Electronics', 'E-waste', 'Batteries', 'Phone charger', 'Toothbrush', 'Razor', 'Disposable razor', 'Marker', 'Pen', 'Plastic pen', 'Highlighter', 'Sketch pen', 'Permanent marker', 'Ballpoint pen', 'Sponges', 'Plastic toothbrush', 'Plastic toys', 'Plastic watch', 'Diaper', 'Sanitary pad', 'Plastic gloves', 'Rubber bands', 'Rubber tire', 'Vinyl', 'Pvc pipe', 'Plastic pipe', 'Nylon', 'Polyester', 'Acrylic', 'Spandex', 'Synthetic fabric', 'Balloon', 'Blister pack', 'Cd', 'Dvd', 'Old wires', 'Cables', 'Old toys', 'Plastic comb', 'Plastic storage box', 'Plastic bucket', 'Plastic liner', 'Plastic garbage bag', 'Plastic mailer', 'Shoes', 'Clothing', 'Sneakers', 'Rubber gloves', 'Bubble wrap', 'Polystyrene foam', 'Styrofoam cups', 'Plastic sheet', 'Plastic packaging film', 'Toothpaste tube', 'Plastic toothpaste container', 'Hair ties', 'Clamshell packaging', 'Plastic tray', 'Toiletry packaging', 'Cosmetic packaging', 'Furniture wrap', 'Plastic tags', 'Disposable cup', 'Single-use plastic', 'Plastic utensils', 'Plastic cutlery', 'Clothing tags', 'Packing peanuts', 'Plastic film wrap', 'Disposable face mask', 'Disposable gloves', 'Synthetic shoes', 'Plastic straws', 'Chips packet', 'Biscuit wrapper', 'Chocolate wrapper', 'Plastic food wrapper', 'Plastic packaging tape', 'Aluminum foil', 'Aluminum can', 'Tin can', 'Metal can', 'Glass bottle', 'Glass jar', 'Ceramic', 'Porcelain', 'Stainless steel', 'Iron', 'Steel scrap', 'Electronics', 'E-waste', 'Batteries', 'Phone charger', 'Toothbrush', 'Razor', 'Disposable razor', 'Marker', 'Pen', 'Plastic pen', 'Highlighter', 'Sketch pen', 'Ballpoint pen', 'Sponges', 'Plastic toothbrush', 'Plastic toys', 'Toys', 'Diaper', 'Sanitary pad', 'Plastic gloves', 'Rubber bands', 'Rubber tire', 'Vinyl', 'Pvc pipe', 'Plastic pipe', 'Nylon', 'Polyester', 'Acrylic', 'Spandex', 'Synthetic fabric', 'Balloon', 'Blister pack', 'Cd', 'Dvd', 'Wires', 'Cables', 'Plastic comb', 'Plastic storage box', 'Combplastic bucket', 'Plastic liner', 'Plastic garbage bag', 'Plastic mailer', 'Shoes', 'Clothing', 'Sneakers', 'Rubber gloves', 'Bubble wrap', 'Polystyrene foam', 'Styrofoam cups', 'Plastic sheet', 'Plastic packaging film', 'Toothpaste tube', 'Plastic toothpaste container', 'Hair ties', 'Clamshell packaging', 'Plastic tray', 'Toiletry packaging', 'Cosmetic packaging', 'Furniture wrap', 'Plastic tags', 'Disposable cup', 'Single-use plastic', 'Plastic utensils', 'Plastic cutlery', 'Clothing tags', 'Packing peanuts', 'Plastic film wrap', 'Disposable face mask', 'Disposable gloves', 'Synthetic shoes', 'Utensilsplastic straws', 'Snacks', 'Junk food', 'Fried food', 'Bottle', 'Nail', 'Communication device']
+    
+waste_mapping = {}
+
+# Add items from biodegradable list to the mapping
+for item in biodegradable_items:
+    waste_mapping[item.lower()] = "biodegradable"
+
+# Add items from non-biodegradable list to the mapping
+for item in non_biodegradable_items:
+    waste_mapping[item.lower()] = "non-biodegradable"
+def classify_waste(labels, waste_mapping):
+    """
+    Classify the waste as biodegradable or non-biodegradable based on the waste_mapping dictionary.
+    
+    Args:
+    labels: List of label objects, each with description and score attributes.
+    waste_mapping: Dictionary mapping item descriptions to 'biodegradable' or 'non-biodegradable'.
+    
+    Returns:
+    str: 'biodegradable', 'non-biodegradable', or 'unknown' based on the scores.
+    """
+    bio_score = 0
+    non_bio_score = 0
+
+    # Iterate over the labels and classify using waste_mapping
+    for label in labels:
+        description = label.description.upper()  # Convert description to uppercase for matching
+        classification = waste_mapping.get(description, 'unknown')
+
+        if classification == 'biodegradable':
+            bio_score += label.score
+        elif classification == 'non-biodegradable':
+            non_bio_score += label.score
+    # Print scores for debugging
+    print("\nBiodegradable score:", bio_score)
+    print("Non-biodegradable score:", non_bio_score)
+
+    # Determine the classification based on the scores
+    if bio_score > non_bio_score:
+        return 'biodegradable'
+    elif non_bio_score > bio_score:
+        return 'non-biodegradable'
+    else:
+        return 'unknown'
+
+
+def main():
+    """Main function to run the waste classification process."""
+    while True:
+        # Capture the image using the laptop camera
+        image_path = capture_image()
+        if not image_path:
+            break
+
+        # Analyze the image using Google Vision API
+        labels = analyze_image(image_path)
+
+        # Classify the waste based on the image labels
+        bio_score = 0
+        non_bio_score = 0
+
+        for label in labels:
+            description = label.description.lower().strip()  # Normalize to lowercase and strip extra spaces
+            classification = waste_mapping.get(description, 'unknown')
+
+            print(f"Label: {label.description} | Classification: {classification}")  # Debugging line
+
+            if classification == 'biodegradable':
+                bio_score += label.score
+            elif classification == 'non-biodegradable':
+                non_bio_score += label.score
+
+        
+        print(f"Biodegradable score: {bio_score}")
+        print(f"Non-biodegradable score: {non_bio_score}")
+
+        # Log the waste type
+        # print(f"Waste classified as: {waste_type}")
+
+        # Wait for 10 seconds before capturing the next image
+        time.sleep(20)
+
+if _name_ == '_main_':
+    main()
