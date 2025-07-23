@@ -1,0 +1,1251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr"
+  style=""
+  class=" inputtypes-search inputtypes-tel inputtypes-url inputtypes-email no-inputtypes-datetime inputtypes-date inputtypes-month inputtypes-week inputtypes-time inputtypes-datetime-local inputtypes-number inputtypes-range inputtypes-color details no-touchevents js">
+<plasmo-csui><template shadowrootmode="open">
+    <style>
+      *,
+      :before,
+      :after {
+        box-sizing: border-box
+      }
+
+      .overlay-container {
+        background: #102239e6;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        position: fixed
+      }
+
+      .overlay-progress {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        display: flex
+      }
+
+      .overlay-progress-status {
+        flex-direction: column;
+        justify-content: center;
+        display: flex
+      }
+
+      .overlay-progress-text {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-progress-bar {
+        position: relative
+      }
+
+      .overlay-progress-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(13px, 13px)
+      }
+
+      .overlay-complete-save-button {
+        background: #8243ea;
+        border: 0;
+        border-radius: 60px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        display: inline-flex
+      }
+
+      .overlay-complete-save-button:active,
+      .overlay-complete-save-button:hover {
+        background: #6635b8
+      }
+
+      .overlay-complete-save-button-text {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.32px;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px
+      }
+
+      .overlay-complete {
+        flex-direction: column;
+        align-items: center;
+        gap: 64px;
+        width: 1064px;
+        max-width: 80%;
+        padding-top: 24px;
+        display: flex
+      }
+
+      .overlay-complete-logo {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        display: flex
+      }
+
+      .overlay-complete-logo-img {
+        width: 80px;
+        height: 80px
+      }
+
+      .overlay-complete-logo-subtext {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-complete-save {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        gap: 40px;
+        width: 100%;
+        max-width: 420px;
+        display: flex
+      }
+
+      .overlay-complete-save-location {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        display: flex
+      }
+
+      .overlay-complete-save-location-title {
+        color: #fff;
+        letter-spacing: -.28px;
+        margin-left: 16px;
+        font-family: Kodchasan, serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-complete-save-location-subtext {
+        color: #fff;
+        letter-spacing: -.24px;
+        margin-left: 16px;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .overlay-complete-image-container {
+        background-color: #fff;
+        border-radius: 10px;
+        width: 400px;
+        height: 220px;
+        max-height: 220px;
+        display: flex;
+        overflow: hidden;
+        box-shadow: 0 8px 20px #00000026
+      }
+
+      .overlay-complete-image {
+        max-width: 100%;
+        margin: auto
+      }
+
+      .overlay-error {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        max-width: 400px;
+        display: flex
+      }
+
+      .overlay-error-status {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        display: flex
+      }
+
+      .overlay-error-logo {
+        width: 80px;
+        height: 80px
+      }
+
+      .overlay-error-text-title {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-error-text-message {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.24px;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .overlay-error-actions {
+        flex-direction: row;
+        gap: 8px;
+        display: flex
+      }
+
+      .overlay-error-support-button {
+        cursor: pointer;
+        background: #fff;
+        border: 0;
+        border-radius: 60px;
+        padding: 10px 20px;
+        text-decoration: none
+      }
+
+      .overlay-error-support-button-text {
+        color: #102239;
+        text-align: center;
+        letter-spacing: -.32px;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px
+      }
+
+      .overlay-close-button {
+        position: fixed;
+        top: 20px;
+        left: 20px
+      }
+
+      .overlay-complete-save-error {
+        background: #5a2636;
+        border-radius: 7px;
+        margin-top: -22px;
+        padding: 10px 14px
+      }
+
+      .overlay-complete-save-error-text {
+        color: #ff77b1;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal
+      }
+
+      .overlay-complete-data {
+        justify-content: center;
+        align-items: center;
+        gap: 10vw;
+        display: flex
+      }
+
+      .overlay-complete-info {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        display: flex
+      }
+
+      .dropdown-wrapper {
+        background: #fff;
+        border-radius: 8px
+      }
+
+      .dropdown-container {
+        background: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        position: relative;
+        overflow-y: auto
+      }
+
+      .dropdown-overlay {
+        z-index: auto;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0
+      }
+
+      .dropdown-open-container {
+        z-index: 200;
+        background: #fff;
+        border-radius: 8px;
+        width: 100%;
+        position: absolute;
+        top: 64px
+      }
+
+      .dropdown-item-container {
+        cursor: pointer;
+        background: #fff;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex
+      }
+
+      .dropdown-item-container:hover {
+        background: #e8eaee
+      }
+
+      .dropdown-item-name {
+        color: #102239;
+        letter-spacing: -.32px;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-container {
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex;
+        position: sticky;
+        bottom: 0
+      }
+
+      .dropdown-create-title {
+        color: #10223966;
+        letter-spacing: -.32px;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-container-open {
+        cursor: pointer;
+        display: contents
+      }
+
+      .dropdown-create-container-close {
+        display: contents
+      }
+
+      .dropdown-create-input {
+        caret-color: #102239;
+        color: #102239;
+        letter-spacing: -.32px;
+        background: 0 0;
+        border: 0;
+        outline: none;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-input::placeholder {
+        letter-spacing: -.32px;
+        color: #10223933;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .tags-dropdown-container {
+        background: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        position: relative;
+        overflow-y: visible
+      }
+
+      .tags-dropdown-dropdown {
+        z-index: 100;
+        background-color: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        gap: 14px;
+        max-height: 400px;
+        padding: 12px;
+        display: flex;
+        position: absolute;
+        top: 64px;
+        overflow-y: scroll
+      }
+
+      .tags-dropdown-section {
+        flex-direction: column;
+        gap: 14px;
+        display: flex
+      }
+
+      .tags-dropdown-section-title {
+        letter-spacing: -.32px;
+        color: #00000080;
+        font-family: Kodchasan, serif;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .tags-dropdown-section-value {
+        letter-spacing: -.32px;
+        color: #000;
+        border: 1px solid #dfe1e6;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: Kodchasan, serif;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .tags-dropdown-section-values {
+        flex-wrap: wrap;
+        gap: 8px;
+        display: flex
+      }
+
+      .tags-dropdown-overlay {
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0
+      }
+
+      .dropdown-summary-container {
+        background: #fff;
+        border-radius: 8px;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex
+      }
+
+      .dropdown-summary-placeholder {
+        letter-spacing: -.32px;
+        color: #102239;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-summary-chips-container {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        display: flex
+      }
+
+      .dropdown-summary-chip {
+        letter-spacing: -.32px;
+        color: #fff;
+        background-color: #2f2f2f;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-family: Kodchasan, serif;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .loader-dots {
+        justify-content: center;
+        align-items: center;
+        width: 102.74px;
+        height: 20px;
+        display: flex
+      }
+
+      .loader-dots span {
+        background: #fff;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        margin: 0 2px 0 0;
+        transition: all 6s;
+        animation: 2s infinite wave;
+        display: inline-block
+      }
+
+      .loader-dots span:first-child {
+        animation-delay: 0s
+      }
+
+      .loader-dots span:nth-child(2) {
+        animation-delay: .1s
+      }
+
+      .loader-dots span:nth-child(3) {
+        animation-delay: .2s
+      }
+
+      @keyframes wave {
+
+        0%,
+        40%,
+        to {
+          transform: translate(0)
+        }
+
+        10% {
+          transform: translateY(-15px)
+        }
+      }
+    </style>
+    <div id="plasmo-shadow-container" style="z-index: 2147483647; position: relative;">
+      <div id="plasmo-overlay-0" class="plasmo-csui-container"
+        style="display: flex; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+  </template></plasmo-csui>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <noscript>
+    <meta http-equiv="Refresh"
+      content="0; URL=/facultyrecruitment/big_pipe/no-js?destination=/facultyrecruitment/faculty-recruitment-dbme-06-2023" />
+  </noscript>
+  <meta name="Generator">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="" type="image/vnd.microsoft.icon">
+
+  <title>Faculty Recruitment Form</title>
+  <link rel="stylesheet" media="all" href="{% static 'css/css_CAKewM4g5p9m-yklJzS-RDai2skCekWdEaxkoJb6GJc.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/progress-tracker.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/css_CDNdYFZc_u1hKAYHmmWMeegy34XIVhWgX4k2nWfKzZ0.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/css_a-X1G4vJLNTL1vcsd9Xk3DecS6qs6H0AaguWksE0o68.css' %}">
+  <link rel="stylesheet" media="print" href="{% static 'css/css_Z5jMg7P_bjcW9iUzujI7oaechMyxQTUqZhHJ_aYSq04.css' %}">
+
+  <script src="{% static 'js/modernizr.min.js' %}"></script>
+  <script src="{% static 'js/modernizr-additional-tests.js' %}"></script>
+
+
+</head>
+
+<body class="layout-no-sidebars user-logged-in path-webform" data-once="form-single-submit detailsAria">
+  <a href="" class="visually-hidden focusable skip-link">
+    Skip to main content
+  </a>
+
+  <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas="">
+    <div id="page-wrapper">
+      <div id="page">
+        <header id="header" class="header" role="banner">
+          <div class="section layout-container clearfix">
+            <div class="region region-secondary-menu">
+
+              <nav role="navigation" aria-labelledby="block-bartik-account-menu-menu" id="block-bartik-account-menu"
+                class="block block-menu navigation menu--account">
+
+                <h2 class="visually-hidden" id="block-bartik-account-menu-menu">User account menu</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-account-menu"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-account-menu"></div>
+                  <a class="menu-toggle" href="">Show — User account menu</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — User account menu</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="5 account.html">My account</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="1 Before Login.html">Log out</a>
+                    </li>
+                  </ul>
+
+
+
+                </div>
+              </nav>
+
+            </div>
+
+            <div class="clearfix region region-header">
+              <div id="block-bartik-branding"
+                class="clearfix site-branding block block-system block-system-branding-block">
+
+
+                <a href="" rel="home" class="site-branding__logo">
+                  <img src="{% static 'img/logo_1.png' %}" alt="Logo">
+                </a>
+                <div class="site-branding__text">
+                  <div class="site-branding__name">
+                    <a href="4 faculty.html" rel="home">Faculty Recruitment</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="region region-primary-menu">
+
+              <nav role="navigation" aria-labelledby="block-bartik-main-menu-menu" id="block-bartik-main-menu"
+                class="block block-menu navigation menu--main">
+
+                <h2 class="visually-hidden" id="block-bartik-main-menu-menu">Main navigation</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-main-menu"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-main-menu"></div>
+                  <a class="menu-toggle" href="">Show — Main navigation</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — Main navigation</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="2 After Login.html" class="is-active">Home</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="3 Rolling.html">Rolling Adv.</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="4 faculty.html">Faculty Recruitment Adv.</a>
+                    </li>
+                  </ul>
+
+
+
+                </div>
+              </nav>
+
+            </div>
+
+          </div>
+        </header>
+        <div class="highlighted">
+          <aside class="layout-container section clearfix" role="complementary">
+            <div class="region region-highlighted">
+              <div class="hidden"></div>
+
+            </div>
+
+          </aside>
+        </div>
+        <div id="main-wrapper" class="layout-main-wrapper layout-container clearfix">
+          <div id="main" class="layout-main clearfix">
+            <div class="region region-breadcrumb">
+              <div id="block-bartik-breadcrumbs" class="block block-system block-system-breadcrumb-block">
+
+
+                <div class="content">
+                  <nav class="breadcrumb" role="navigation" aria-labelledby="system-breadcrumb">
+                    <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+                    <ol>
+                      <li>
+                        <a href="2 After Login.html">Home</a>
+                      </li>
+                    </ol>
+                  </nav>
+
+                </div>
+              </div>
+
+            </div>
+
+            <main id="content" class="column main-content" role="main">
+              <section class="section">
+                <a id="main-content" tabindex="-1"></a>
+                <div class="region region-content">
+                  <div id="block-bartik-page-title" class="block block-core block-page-title-block">
+
+
+                    <div class="content">
+
+
+                      <h1 class="title page-title">Faculty Recruitment Form</h1>
+
+
+                    </div>
+                  </div>
+                  <div id="block-bartik-content" class="block block-system block-system-main-block">
+
+
+                    <div class="content">
+                      <form
+                        class="webform-submission-form webform-submission-add-form webform-submission-faculty-recruitment-dbme-06-2023-form webform-submission-faculty-recruitment-dbme-06-2023-add-form js-webform-unsaved js-webform-submit-once js-webform-disable-autosubmit js-webform-details-toggle webform-details-toggle"
+                        autocomplete="off" data-webform-unsaved=""
+                        enctype="multipart/form-data" action="{% url 'Submit' %}" method="post"
+                        id="webform-submission-faculty-recruitment-dbme-06-2023-add-form" accept-charset="UTF-8"
+                        data-once="form-updated">
+                        {% csrf_token %}
+
+                        <div class="webform-progress">
+
+
+
+                          <ul class="webform-progress-tracker progress-tracker progress-tracker--center"
+                            data-webform-progress-steps="">
+                            <li data-webform-page="basic_details" title="Basic Details"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="1"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Basic Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="communication_details" title="Communication Details"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="2"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Communication Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="education_details" title="Education Details"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="3"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Education Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="experience_details" title="Post PhD Experience"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="4"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Post PhD Experience
+                                </div>
+                              </div>
+                            </li>
+                            <!-- <li data-webform-page="pre_phd_experience" title="Pre PhD Experience " class="progress-step is-complete">
+      <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link="" data-text="5"></div>
+              <div class="progress-text">
+          <div class="progress-title" data-webform-progress-link="">
+            <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+            Pre PhD Experience 
+          </div>
+        </div>
+          </li> -->
+                            <li data-webform-page="publications_patents_others_details"
+                              title="Publications/Patents/Others Details" class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="5"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Publications/Patents/Others Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="general_information" title="General Details"
+                              class="progress-step is-active">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="6"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Current</span>
+                                  General Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="webform_confirmation" title="Complete" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="7"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Complete
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+
+
+
+                        </div>
+                        <div data-webform-key="general_information" 
+                          id="edit-general-information" class="js-form-wrapper form-wrapper">
+                          <fieldset id="edit-general-details"
+                            class="js-webform-type-fieldset webform-type-fieldset js-form-item form-item js-form-wrapper form-wrapper">
+                            <legend>
+                              <span class="visually-hidden fieldset-legend">General Details</span>
+                            </legend>
+                            <div class="fieldset-wrapper">
+                              <div
+                                class="js-form-item form-item js-form-type-textarea form-type-textarea js-form-item-academic-or-professional-awards-honours form-item-academic-or-professional-awards-honours">
+                                <label for="edit-academic-or-professional-awards-honours">Academic or Professional
+                                  Awards / Honours:</label>
+                                <div class="form-textarea-wrapper">
+                                  <textarea autocomplete="off"
+                                    id="edit-academic-or-professional-awards-honours"
+                                    name="academic_or_professional_awards_honours" rows="5" cols="60"
+                                    class="form-textarea resize-vertical"></textarea>
+                                </div>
+
+                              </div>
+                              <div id="ajax-wrapper--25">
+                                <div
+                                  class="js-form-item form-item js-form-type-webform-document-file form-type-webform-document-file js-form-item-other-relevant-information form-item-other-relevant-information">
+                                  <label for="edit-other-relevant-information-upload"
+                                    id="edit-other-relevant-information--label">Upload your CV:</label>
+
+                                  <div id=" form-managed-file">
+                                    <input type="file"
+                                      id="edit-other-relevant-information-upload"
+                                      name="files[other_relevant_information]" size="22" class="form-file"
+                                      >
+
+                                  </div>
+
+                                  <div class="description">
+                                    <div id="edit-other-relevant-information--description"
+                                      class="webform-element-description">One file only.<br>2 MB limit.<br>Allowed
+                                      types: pdf, doc, docx.
+                                    </div>
+                                    <progress id="uploadProgress1" value="0" max="100" style="display:none;"></progress> 
+
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="js-form-item form-item js-form-type-webform-table form-type-webform-table js-form-item-references-details form-item-references-details">
+                                <label>Details of three references who know about the candidate fully (preferably with
+                                  whom the candidate has already worked):</label>
+                                <div class="tableresponsive-toggle-columns"><button type="button"
+                                    class="link tableresponsive-toggle"
+                                    title="Show table cells that were hidden to make the table fit within a small screen."
+                                    style="display: none;">Hide lower priority columns</button></div>
+                                <table class="webform-table responsive-enabled" id="edit-references-details"
+                                  data-striping="1" data-once="tableresponsive">
+
+
+                                  <thead>
+                                    <tr>
+                                      <th>Name*</th>
+                                      <th>Designation*</th>
+                                      <th>Organization*</th>
+                                      <th>Email*</th>
+                                      <th>Phone Number*</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-name-reference-01 form-item-name-reference-01 form-no-label">
+                                          <input type="text"
+                                            id="edit-name-reference-01" name="name_reference_1" value="" size="60"
+                                            maxlength="255" class="form-text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-designation-reference-01 form-item-designation-reference-01 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-designation-reference-01" name="designation_reference_1" value=""
+                                            size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-organization-reference-01 form-item-organization-reference-01 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-organization-reference-01" name="organization_reference_1"
+                                            value="" size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-reference-01 form-item-email-reference-01 form-no-label">
+                                          <input autocomplete=""
+                                            type="email" id="edit-email-reference-01" name="email_reference_1" value=""
+                                            size="60" maxlength="254" class="form-email">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-phonenumber-reference-01 form-item-phonenumber-reference-01 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="number" min= "0" max="9999999999"
+                                            id="edit-phonenumber-reference-01" name="phonenumber_reference_1" value=""
+                                            size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr class="webform-table-row even">
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-name-reference-02 form-item-name-reference-02 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-name-reference-02" name="name_reference_2" value="" size="60"
+                                            maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-designation-reference-02 form-item-designation-reference-02 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-designation-reference-02" name="designation_reference_2" value=""
+                                            size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-organization-reference-02 form-item-organization-reference-02 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-organization-reference-02" name="organization_reference_2"
+                                            value="" size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-reference-02 form-item-email-reference-02 form-no-label">
+                                          <input autocomplete=""
+                                            type="email" id="edit-email-reference-02" name="email_reference_2" value=""
+                                            size="60" maxlength="254" class="form-email">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-phonenumber-reference-02 form-item-phonenumber-reference-02 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="number" min= "0" max="9999999999"
+                                            id="edit-phonenumber-reference-02" name="phonenumber_reference_2" value=""
+                                            size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr class="webform-table-row odd">
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-name-reference-03 form-item-name-reference-03 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-name-reference-03" name="name_reference_3" value="" size="60"
+                                            maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-designation-reference-03 form-item-designation-reference-03 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-designation-reference-03" name="designation_reference_3" value=""
+                                            size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-organization-reference-03 form-item-organization-reference-03 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="text"
+                                            id="edit-organization-reference-03" name="organization_reference_3"
+                                            value="" size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-reference-03 form-item-email-reference-03 form-no-label">
+                                          <input autocomplete=""
+                                            type="email" id="edit-email-reference-3" name="email_reference_03" value=""
+                                            size="60" maxlength="254" class="form-email">
+
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-phonenumber-reference-03 form-item-phonenumber-reference-03 form-no-label">
+                                          <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                            class="js-webform-input-mask form-text"
+                                            type="number" min= "0" max="9999999999"
+                                            id="edit-phonenumber-reference-03" name="phonenumber_reference_3" value=""
+                                            size="60" maxlength="255" inputmode="text">
+
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                              </div>
+                              <div>
+                                <block><b>Expected date of joining, if offered a faculty position:</b></block>
+                                <input type="date" 
+                                  name="joining_time_required" value="" class="form-date required" required="required"
+                                  aria-required="true">
+
+                              </div>
+
+                            </div>
+                          </fieldset>
+                        </div>
+                        <div class="js-webform-states-hidden js-form-wrapper">
+                        </div>
+                        <div class="form-actions webform-actions js-form-wrapper form-wrapper" id="edit-actions">
+                          <input formnovalidate="formnovalidate"
+                            class="webform-button--previous button js-form-submit form-submit"
+                            type="submit" id="edit-actions-wizard-prev"
+                            name="op" value="&lt; Previous">
+
+                            <input
+                            formnovalidate="formnovalidate"
+                            class="webform-button--draft button js-form-submit form-submit"
+                            type="submit" id="edit-actions-draft" name="op"
+                            value="Submit">
+
+                          <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                              // Redirect "Previous" button
+                              document.getElementById('edit-actions-wizard-prev').onclick = function (event) {
+                                event.preventDefault(); // Prevent default submission
+                                window.location.href = 'PAGE 6 OF 8.html'; // Replace with the desired Previous page URL
+                              };
+
+                              // Redirect "Next" button
+                              document.getElementById('edit-actions-wizard-next').onclick = function (event) {
+                                event.preventDefault(); // Prevent default submission
+                                window.location.href = 'PAGE 8 OF 8.html'; // Replace with the desired Next page URL
+                              };
+                            });
+                          </script>
+                          <script>
+                            document.querySelector('#edit-other-relevant-information-upload').addEventListener('change', function () {
+                                const progress = document.getElementById('uploadProgress1');
+                                progress.style.display = 'block'; // Show progress bar
+                                progress.value = 0;
+  
+                                // Example: Simulate progress
+                                const interval = setInterval(() => {
+                                    progress.value += 10;
+                                    if (progress.value >= 100) {
+                                        clearInterval(interval);
+                                        progress.style.display = 'none'; // Hide after complete
+                                    }
+                                }, 500);
+                            });
+                            </script>
+                        </div>
+
+                      </form>
+
+                    </div>
+                  </div>
+
+                </div>
+
+              </section>
+            </main>
+          </div>
+        </div>
+        <footer class="site-footer">
+          <div class="layout-container">
+            <div class="site-footer__bottom">
+              <div class="region region-footer-fifth">
+
+                <nav role="navigation" aria-labelledby="block-bartik-footer-menu" id="block-bartik-footer"
+                  class="block block-menu navigation menu--footer">
+
+                  <h2 class="visually-hidden" id="block-bartik-footer-menu">Footer menu</h2>
+
+
+                  <div class="content">
+                    <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-footer"></div>
+                    <div class="menu-toggle-target" id="hide-block-bartik-footer"></div>
+                    <a class="menu-toggle" href="">Show — Footer menu</a>
+                    <a class="menu-toggle menu-toggle--hide" href="">Hide — Footer menu</a>
+
+                    <ul class="clearfix menu">
+                      <li class="menu-item">
+                        <a href="contact.html" >Contact</a>
+                      </li>
+                    </ul>
+
+
+
+                  </div>
+                </nav>
+
+              </div>
+            </div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <script src="{% static 'js/jquery.inputmask.min.js' %}"></script>
+  <script src="{% static 'js/js_OAJtn62El4mCqAfw8Bcr1CdTLtX1EpiKYdigseRB_gA.js' %}"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('webform-submission-faculty-recruitment-dbme-06-2023-add-form');
+        const nextButton = document.getElementById('edit-actions-wizard-next');
+        const saveButton = document.getElementById('edit-actions-draft');
+    
+        // Function to save form data
+        function saveFormData() {
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Convert FormData to object
+            formData.forEach((value, key) => {
+                // Skip file inputs as they can't be stored in sessionStorage
+                if (!key.startsWith('files[')) {
+                    data[key] = value;
+                }
+            });
+            
+            // Save to sessionStorage
+            sessionStorage.setItem('facultyFormPage4', JSON.stringify(data));
+        }
+    
+        // Save data when clicking Next
+        nextButton.addEventListener('click', function(e) {
+            saveFormData();
+        });
+    
+        // Save data when clicking Save Draft
+        saveButton.addEventListener('click', function(e) {
+            saveFormData();
+        });
+    
+        // Load saved data when page loads
+        const savedData = sessionStorage.getItem('facultyFormPage4');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            
+            // Fill form fields with saved data
+            Object.keys(data).forEach(key => {
+                const element = form.elements[key];
+                if (element) {
+                    if (element.type === 'select-one') {
+                        element.value = data[key];
+                        // Trigger change event for dependent fields
+                        const event = new Event('change');
+                        element.dispatchEvent(event);
+                    } else if (element.type === 'date') {
+                        element.value = data[key];
+                    } else {
+                        element.value = data[key];
+                    }
+                }
+            });
+    
+            // Handle conditional fields
+            if (data.pwd_category === 'YES') {
+                document.getElementById('edit-pwd-type').style.display = 'block';
+            }
+            
+            if (data.nationality === 'FOREIGN') {
+                document.querySelector('.js-form-item-are-you-pio-oci-none').style.display = 'block';
+                document.querySelector('.js-form-item-appear-inperson-or-skype').style.display = 'block';
+                document.querySelector('.js-form-item-skype-id').style.display = 'block';
+            }
+        }
+    });
+    </script>
+    
+
+
+  <div class="visually-hidden" aria-live="polite" aria-busy="false"></div>
+</body>
+
+</html>

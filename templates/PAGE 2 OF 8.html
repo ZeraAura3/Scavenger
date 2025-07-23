@@ -1,0 +1,1108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr"
+  prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# "
+  style=""
+  class=" inputtypes-search inputtypes-tel inputtypes-url inputtypes-email no-inputtypes-datetime inputtypes-date inputtypes-month inputtypes-week inputtypes-time inputtypes-datetime-local inputtypes-number inputtypes-range inputtypes-color details no-touchevents js">
+<plasmo-csui><template shadowrootmode="open">
+    <style>
+      *,
+      :before,
+      :after {
+        box-sizing: border-box
+      }
+
+      .overlay-container {
+        background: #102239e6;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        position: fixed
+      }
+
+      .overlay-progress {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        display: flex
+      }
+
+      .overlay-progress-status {
+        flex-direction: column;
+        justify-content: center;
+        display: flex
+      }
+
+      .overlay-progress-text {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-progress-bar {
+        position: relative
+      }
+
+      .overlay-progress-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(13px, 13px)
+      }
+
+      .overlay-complete-save-button {
+        background: #8243ea;
+        border: 0;
+        border-radius: 60px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        display: inline-flex
+      }
+
+      .overlay-complete-save-button:active,
+      .overlay-complete-save-button:hover {
+        background: #6635b8
+      }
+
+      .overlay-complete-save-button-text {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.32px;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px
+      }
+
+      .overlay-complete {
+        flex-direction: column;
+        align-items: center;
+        gap: 64px;
+        width: 1064px;
+        max-width: 80%;
+        padding-top: 24px;
+        display: flex
+      }
+
+      .overlay-complete-logo {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        display: flex
+      }
+
+      .overlay-complete-logo-img {
+        width: 80px;
+        height: 80px
+      }
+
+      .overlay-complete-logo-subtext {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-complete-save {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        gap: 40px;
+        width: 100%;
+        max-width: 420px;
+        display: flex
+      }
+
+      .overlay-complete-save-location {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        display: flex
+      }
+
+      .overlay-complete-save-location-title {
+        color: #fff;
+        letter-spacing: -.28px;
+        margin-left: 16px;
+        font-family: Kodchasan, serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-complete-save-location-subtext {
+        color: #fff;
+        letter-spacing: -.24px;
+        margin-left: 16px;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .overlay-complete-image-container {
+        background-color: #fff;
+        border-radius: 10px;
+        width: 400px;
+        height: 220px;
+        max-height: 220px;
+        display: flex;
+        overflow: hidden;
+        box-shadow: 0 8px 20px #00000026
+      }
+
+      .overlay-complete-image {
+        max-width: 100%;
+        margin: auto
+      }
+
+      .overlay-error {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        max-width: 400px;
+        display: flex
+      }
+
+      .overlay-error-status {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        display: flex
+      }
+
+      .overlay-error-logo {
+        width: 80px;
+        height: 80px
+      }
+
+      .overlay-error-text-title {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-error-text-message {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.24px;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .overlay-error-actions {
+        flex-direction: row;
+        gap: 8px;
+        display: flex
+      }
+
+      .overlay-error-support-button {
+        cursor: pointer;
+        background: #fff;
+        border: 0;
+        border-radius: 60px;
+        padding: 10px 20px;
+        text-decoration: none
+      }
+
+      .overlay-error-support-button-text {
+        color: #102239;
+        text-align: center;
+        letter-spacing: -.32px;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px
+      }
+
+      .overlay-close-button {
+        position: fixed;
+        top: 20px;
+        left: 20px
+      }
+
+      .overlay-complete-save-error {
+        background: #5a2636;
+        border-radius: 7px;
+        margin-top: -22px;
+        padding: 10px 14px
+      }
+
+      .overlay-complete-save-error-text {
+        color: #ff77b1;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal
+      }
+
+      .overlay-complete-data {
+        justify-content: center;
+        align-items: center;
+        gap: 10vw;
+        display: flex
+      }
+
+      .overlay-complete-info {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        display: flex
+      }
+
+      .dropdown-wrapper {
+        background: #fff;
+        border-radius: 8px
+      }
+
+      .dropdown-container {
+        background: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        position: relative;
+        overflow-y: auto
+      }
+
+      .dropdown-overlay {
+        z-index: auto;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0
+      }
+
+      .dropdown-open-container {
+        z-index: 200;
+        background: #fff;
+        border-radius: 8px;
+        width: 100%;
+        position: absolute;
+        top: 64px
+      }
+
+      .dropdown-item-container {
+        cursor: pointer;
+        background: #fff;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex
+      }
+
+      .dropdown-item-container:hover {
+        background: #e8eaee
+      }
+
+      .dropdown-item-name {
+        color: #102239;
+        letter-spacing: -.32px;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-container {
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex;
+        position: sticky;
+        bottom: 0
+      }
+
+      .dropdown-create-title {
+        color: #10223966;
+        letter-spacing: -.32px;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-container-open {
+        cursor: pointer;
+        display: contents
+      }
+
+      .dropdown-create-container-close {
+        display: contents
+      }
+
+      .dropdown-create-input {
+        caret-color: #102239;
+        color: #102239;
+        letter-spacing: -.32px;
+        background: 0 0;
+        border: 0;
+        outline: none;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-input::placeholder {
+        letter-spacing: -.32px;
+        color: #10223933;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .tags-dropdown-container {
+        background: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        position: relative;
+        overflow-y: visible
+      }
+
+      .tags-dropdown-dropdown {
+        z-index: 100;
+        background-color: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        gap: 14px;
+        max-height: 400px;
+        padding: 12px;
+        display: flex;
+        position: absolute;
+        top: 64px;
+        overflow-y: scroll
+      }
+
+      .tags-dropdown-section {
+        flex-direction: column;
+        gap: 14px;
+        display: flex
+      }
+
+      .tags-dropdown-section-title {
+        letter-spacing: -.32px;
+        color: #00000080;
+        font-family: Kodchasan, serif;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .tags-dropdown-section-value {
+        letter-spacing: -.32px;
+        color: #000;
+        border: 1px solid #dfe1e6;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: Kodchasan, serif;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .tags-dropdown-section-values {
+        flex-wrap: wrap;
+        gap: 8px;
+        display: flex
+      }
+
+      .tags-dropdown-overlay {
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0
+      }
+
+      .dropdown-summary-container {
+        background: #fff;
+        border-radius: 8px;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex
+      }
+
+      .dropdown-summary-placeholder {
+        letter-spacing: -.32px;
+        color: #102239;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-summary-chips-container {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        display: flex
+      }
+
+      .dropdown-summary-chip {
+        letter-spacing: -.32px;
+        color: #fff;
+        background-color: #2f2f2f;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-family: Kodchasan, serif;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .loader-dots {
+        justify-content: center;
+        align-items: center;
+        width: 102.74px;
+        height: 20px;
+        display: flex
+      }
+
+      .loader-dots span {
+        background: #fff;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        margin: 0 2px 0 0;
+        transition: all 6s;
+        animation: 2s infinite wave;
+        display: inline-block
+      }
+
+      .loader-dots span:first-child {
+        animation-delay: 0s
+      }
+
+      .loader-dots span:nth-child(2) {
+        animation-delay: .1s
+      }
+
+      .loader-dots span:nth-child(3) {
+        animation-delay: .2s
+      }
+
+      @keyframes wave {
+
+        0%,
+        40%,
+        to {
+          transform: translate(0)
+        }
+
+        10% {
+          transform: translateY(-15px)
+        }
+      }
+    </style>
+    <div id="plasmo-shadow-container" style="z-index: 2147483647; position: relative;">
+      <div id="plasmo-overlay-0" class="plasmo-csui-container"
+        style="display: flex; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+  </template></plasmo-csui>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <noscript>
+    <meta http-equiv="Refresh"
+      content="0; URL=/facultyrecruitment/big_pipe/no-js?destination=/facultyrecruitment/faculty-recruitment-dbme-06-2023" />
+  </noscript>
+  <meta name="Generator">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://www.iitrpr.ac.in/facultyrecruitment/core/themes/bartik/favicon.ico"
+    type="image/vnd.microsoft.icon">
+
+  <title>Faculty Recruitment Form | facultyrecruitment</title>
+  <link rel="stylesheet" media="all" href="{% static 'css/css_m5Tr6HZxBGrp31tpYLD9URUdnDn3gbCxiTiMJTszBpU.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/progress-tracker.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/css_CDNdYFZc_u1hKAYHmmWMeegy34XIVhWgX4k2nWfKzZ0.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/css_5BX3W1n4EfCbGrUTKaeKZbwcACQksgnQVYkwZPwleSs.css' %}">
+  <link rel="stylesheet" media="print" href="{% static 'css/css_Z5jMg7P_bjcW9iUzujI7oaechMyxQTUqZhHJ_aYSq04.css' %}">
+
+  <script src="{% static 'js/modernizr.min.js' %}"></script>
+  <script src="{% static 'js/modernizr-additional-tests.js' %}"></script>
+
+
+</head>
+
+<body class="layout-no-sidebars user-logged-in path-webform" data-once="form-single-submit detailsAria">
+  <a href="https://www.iitrpr.ac.in/facultyrecruitment/faculty-recruitment-dbme-06-2023#main-content"
+    class="visually-hidden focusable skip-link">
+    Skip to main content
+  </a>
+
+  <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas="">
+    <div id="page-wrapper">
+      <div id="page">
+        <header id="header" class="header" role="banner">
+          <div class="section layout-container clearfix">
+            <div class="region region-secondary-menu">
+
+              <nav role="navigation" aria-labelledby="block-bartik-account-menu-menu" id="block-bartik-account-menu"
+                class="block block-menu navigation menu--account">
+
+                <h2 class="visually-hidden" id="block-bartik-account-menu-menu">User account menu</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-account-menu"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-account-menu"></div>
+                  <a class="menu-toggle" href="">Show — User account menu</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — User account menu</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="5 account.html" >My account</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="1 Before Login.html">Log out</a>
+                    </li>
+                  </ul>
+
+
+
+                </div>
+              </nav>
+
+            </div>
+
+            <div class="clearfix region region-header">
+              <div id="block-bartik-branding"
+                class="clearfix site-branding block block-system block-system-branding-block">
+
+
+                <a href="" rel="home" class="site-branding__logo">
+                  <img src="{% static 'img/logo_1.png' %}" alt="Logo">
+                </a>
+                <div class="site-branding__text">
+                  <div class="site-branding__name">
+                    <a href="4 faculty.html" rel="home">Faculty Recruitment</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="region region-primary-menu">
+
+              <nav role="navigation" aria-labelledby="block-bartik-main-menu-menu" id="block-bartik-main-menu"
+                class="block block-menu navigation menu--main">
+
+                <h2 class="visually-hidden" id="block-bartik-main-menu-menu">Main navigation</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-main-menu"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-main-menu"></div>
+                  <a class="menu-toggle" href="">Show — Main navigation</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — Main navigation</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="2 After Login.html"class="is-active">Home</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="3 Rolling.html">Rolling Adv.</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="4 faculty.html">Faculty Recruitment Adv.</a>
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </nav>
+
+            </div>
+
+          </div>
+        </header>
+        <div class="highlighted">
+          <aside class="layout-container section clearfix" role="complementary">
+            <div class="region region-highlighted">
+              <div class="hidden"></div>
+
+            </div>
+
+          </aside>
+        </div>
+        <div id="main-wrapper" class="layout-main-wrapper layout-container clearfix">
+          <div id="main" class="layout-main clearfix">
+            <div class="region region-breadcrumb">
+              <div id="block-bartik-breadcrumbs" class="block block-system block-system-breadcrumb-block">
+
+
+                <div class="content">
+                  <nav class="breadcrumb" role="navigation" aria-labelledby="system-breadcrumb">
+                    <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+                    <ol>
+                      <li>
+                        <a href="2 After Login.html">Home</a>
+                      </li>
+                    </ol>
+                  </nav>
+
+                </div>
+              </div>
+
+            </div>
+
+            <main id="content" class="column main-content" role="main">
+              <section class="section">
+                <a id="main-content" tabindex="-1"></a>
+                <div class="region region-content">
+                  <div id="block-bartik-page-title" class="block block-core block-page-title-block">
+
+
+                    <div class="content">
+
+
+                      <h1 class="title page-title">Faculty Recruitment Form</h1>
+
+
+                    </div>
+                  </div>
+                  <div id="block-bartik-content" class="block block-system block-system-main-block">
+
+
+                    <div class="content">
+                      <form
+                        class="webform-submission-form webform-submission-add-form webform-submission-faculty-recruitment-dbme-06-2023-form webform-submission-faculty-recruitment-dbme-06-2023-add-form js-webform-unsaved js-webform-submit-once js-webform-disable-autosubmit js-webform-details-toggle webform-details-toggle"
+                        autocomplete="off" data-webform-unsaved=""
+                        enctype="multipart/form-data" action="{% url 'save_draft2' %}" method="post"
+                        id="webform-submission-faculty-recruitment-dbme-06-2023-add-form" accept-charset="UTF-8"
+                        data-once="form-updated"
+                        >
+
+
+                        {% csrf_token %}
+                        <div class="webform-progress">
+
+
+
+                          <ul class="webform-progress-tracker progress-tracker progress-tracker--center"
+                            data-webform-progress-steps="">
+                            <li data-webform-page="basic_details" title="Basic Details"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="1"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Basic Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="communication_details" title="Communication Details"
+                              class="progress-step is-active">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="2"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Current</span>
+                                  Communication Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="education_details" title="Education Details" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="3"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Education Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="experience_details" title="Post PhD Experience"
+                              class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="4"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Post PhD Experience
+                                </div>
+                              </div>
+                            </li>
+                            <!-- <li data-webform-page="pre_phd_experience" title="Pre PhD Experience " class="progress-step">
+      <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link="" data-text="5"></div>
+              <div class="progress-text">
+          <div class="progress-title" data-webform-progress-link="">
+            <span class="visually-hidden" data-webform-progress-state=""></span>
+            Pre PhD Experience 
+          </div>
+        </div>
+          </li> -->
+                            <li data-webform-page="publications_patents_others_details"
+                              title="Publications/Patents/Others Details" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="5"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Publications/Patents/Others Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="general_information" title="General Details" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="6"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  General Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="webform_confirmation" title="Complete" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="7"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Complete
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+
+
+                        </div>
+                        <div data-webform-key="communication_details" id="edit-communication-details" class="js-form-wrapper form-wrapper">
+                          <fieldset id="edit-communication-details-fs"
+                            class="js-webform-type-fieldset webform-type-fieldset js-form-item form-item js-form-wrapper form-wrapper">
+                            <legend>
+                              <span class="visually-hidden fieldset-legend">Communication Details</span>
+                            </legend>
+                            <div class="fieldset-wrapper">
+                              <div
+                                class="webform-element--title-inline js-form-item form-item js-form-type-email form-type-email js-form-item-email-address form-item-email-address">
+                                <label for="edit-email-address" class="js-form-required form-required">Email
+                                  Address:</label>
+                                <input autocomplete="" type="email"
+                                  id="edit-email-address" name="email_address" value="" size="60" maxlength="254"
+                                  class="form-email required" required="required" aria-required="true">
+
+                              </div>
+                              <div
+                                class="webform-element--title-inline js-form-item form-item js-form-type-email form-type-email js-form-item-alternate-email-address form-item-alternate-email-address">
+                                <label for="edit-alternate-email-address">Alternate Email Address:</label>
+                                <input autocomplete="" type="email"
+                                  id="edit-alternate-email-address" name="alternate_email_address" value="" size="60"
+                                  maxlength="254" class="form-email">
+
+                              </div>
+                              <div
+                                class="webform-element--title-inline js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-mobile-no form-item-mobile-no">
+                                <label for="edit-mobile-no" class="js-form-required form-required">Mobile No (with
+                                  country code):</label>
+                                <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                  class="js-webform-input-mask form-text required" type="text" id="edit-mobile-no" name="mobile_no" value="" size="60" maxlength="255"
+                                  required="required" aria-required="true" inputmode="text">
+
+                              </div>
+                              <div
+                                class="webform-element--title-inline js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-alternate-contact-number form-item-alternate-contact-number">
+                                <label for="edit-alternate-contact-number">Alternate contact number (with country
+                                  code):</label>
+                                <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                  class="js-webform-input-mask form-text"
+                                  type="text"
+                                  id="edit-alternate-contact-number" name="alternate_contact_number" value="" size="60"
+                                  maxlength="255" inputmode="text">
+
+                              </div>
+                              <div
+                                class="js-form-item form-item js-form-type-textarea form-type-textarea js-form-item-permanent-address form-item-permanent-address">
+                                <label for="edit-permanent-address" class="js-form-required form-required">Permanent
+                                  Address:</label>
+                                <div class="form-textarea-wrapper">
+                                  <textarea autocomplete="" id="edit-permanent-address" name="permanent_address" rows="5" cols="60"
+                                    class="form-textarea required resize-vertical" required="required"
+                                    aria-required="true"></textarea>
+                                </div>
+
+                              </div>
+                              <div
+                                class="webform-element--title-inline js-form-item form-item js-form-type-textarea form-type-textarea js-form-item-correspondence-address form-item-correspondence-address">
+                                <label for="edit-correspondence-address"
+                                  class="js-form-required form-required">Correspondence Address:</label>
+                                <div class="form-textarea-wrapper">
+                                  <textarea autocomplete="" id="edit-correspondence-address" name="correspondence_address" rows="5" cols="60"
+                                    class="form-textarea required resize-vertical" required="required"
+                                    aria-required="true"></textarea>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          </fieldset>
+                        </div>
+                        <div class="js-webform-states-hidden js-form-wrapper">
+                          <div
+                            class="js-form-item form-item js-form-type-processed-text form-type-processed-text js-form-item- form-item- form-no-label"
+                            id="edit-ineligible-to-apply">
+                            <p><strong>We appreciate your interest in applying for a Faculty Position at IIT.
+                                However, we require that an applicant must have successfully defended his/her PhD thesis
+                                at the time of applying.</strong></p>
+
+                            <p><strong>We wish you Best of Luck!</strong></p>
+                          </div>
+                        </div>
+                        <div class="form-actions webform-actions js-form-wrapper form-wrapper" id="edit-actions"><input
+                            formnovalidate="formnovalidate"
+                            class="webform-button--draft button js-form-submit form-submit"
+                            type="submit" id="edit-actions-draft" name="op"
+                            value="save_draft2">
+                          <input formnovalidate="formnovalidate"
+                            class="webform-button--previous button js-form-submit form-submit"
+                            type="submit" id="edit-actions-wizard-prev"
+                            name="op" value="&lt; Previous">
+                          <input class="webform-button--next button js-form-submit form-submit"
+                            type="submit" id="edit-actions-wizard-next"
+                            name="op" value="Next &gt;">
+
+                          <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                              // Redirect "Previous" button
+                              document.getElementById('edit-actions-wizard-prev').onclick = function (event) {
+                                event.preventDefault(); // Prevent default submission
+                                window.location.href = 'PAGE 1 OF 8.html'; // Replace with the desired Previous page URL
+                              };
+
+                              // Redirect "Next" button
+                              document.getElementById('edit-actions-wizard-next').onclick = function (event) {
+                                event.preventDefault(); // Prevent default submission
+                                window.location.href = 'PAGE 3 OF 8.html'; // Replace with the desired Next page URL
+                              };
+                            });
+                          </script>
+                   </div>
+                    </div>
+                    <input autocomplete="off" type="hidden" name="form_build_id" value="form-8IYKb9N08eP3O-f8x6b6pxVwAXx1w1B3uGYhnASarvw">
+                    <input
+                      type="hidden" name="form_token" value="Inzpx_hem454wcjdIAo0rZjv77Dqw4USOOipBJSPNzs">
+                    <input type="hidden" name="form_id" value="webform_submission_faculty_recruitment_dbme_06_2023_add_form">
+
+
+
+                    </form>
+
+                  </div>
+                </div>
+
+          </div>
+
+          </section>
+          </main>
+        </div>
+      </div>
+      <footer class="site-footer">
+        <div class="layout-container">
+          <div class="site-footer__bottom">
+            <div class="region region-footer-fifth">
+
+              <nav role="navigation" aria-labelledby="block-bartik-footer-menu" id="block-bartik-footer"
+                class="block block-menu navigation menu--footer">
+
+                <h2 class="visually-hidden" id="block-bartik-footer-menu">Footer menu</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-footer"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-footer"></div>
+                  <a class="menu-toggle" href="">Show — Footer menu</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — Footer menu</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="contact.html">Contact</a>
+                    </li>
+                  </ul>
+
+
+
+                </div>
+              </nav>
+
+
+            </div>
+          </div>
+      </footer>
+    </div>
+  </div>
+
+  </div>
+
+
+  <script type="application/json"
+    ></script>
+  <script src="{% static 'js/js_p2cdxL6-cRg8xXaE56OM1pcWBPeY2aK60AMd7RrN2vs.js' %}"></script>
+  <script src="{% static 'js/jquery.inputmask.min.js' %}"></script>
+  <script src="{% static 'js/js_jH3QGnAJvzZ-13i-Qo-wMz5xL2_5MfVWNhuzc-MjN6c.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('webform-submission-faculty-recruitment-dbme-06-2023-add-form');
+        const nextButton = document.getElementById('edit-actions-wizard-next');
+        const saveButton = document.getElementById('edit-actions-draft');
+    
+        // Function to save form data
+        function saveFormData() {
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Convert FormData to object
+            formData.forEach((value, key) => {
+                // Skip file inputs as they can't be stored in sessionStorage
+                if (!key.startsWith('files[')) {
+                    data[key] = value;
+                }
+            });
+            
+            // Save to sessionStorage
+            sessionStorage.setItem('facultyFormPage2', JSON.stringify(data));
+        }
+    
+        // Save data when clicking Next
+        nextButton.addEventListener('click', function(e) {
+            saveFormData();
+        });
+    
+        // Save data when clicking Save Draft
+        saveButton.addEventListener('click', function(e) {
+            saveFormData();
+        });
+    
+        // Load saved data when page loads
+        const savedData = sessionStorage.getItem('facultyFormPage2');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            
+            // Fill form fields with saved data
+            Object.keys(data).forEach(key => {
+                const element = form.elements[key];
+                if (element) {
+                    if (element.type === 'select-one') {
+                        element.value = data[key];
+                        // Trigger change event for dependent fields
+                        const event = new Event('change');
+                        element.dispatchEvent(event);
+                    } else if (element.type === 'date') {
+                        element.value = data[key];
+                    } else {
+                        element.value = data[key];
+                    }
+                }
+            });
+    
+            // Handle conditional fields
+            if (data.pwd_category === 'YES') {
+                document.getElementById('edit-pwd-type').style.display = 'block';
+            }
+            
+            if (data.nationality === 'FOREIGN') {
+                document.querySelector('.js-form-item-are-you-pio-oci-none').style.display = 'block';
+                document.querySelector('.js-form-item-appear-inperson-or-skype').style.display = 'block';
+                document.querySelector('.js-form-item-skype-id').style.display = 'block';
+            }
+        }
+    });
+    </script>
+
+
+
+  <div  class="visually-hidden" aria-live="polite" aria-busy="false"></div>
+</body>
+<script>
+  document.getElementById('webform-submission-faculty-recruitment-dbme-06-2023-add-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      
+      fetch('{% url "save_draft2" %}', {
+          method: 'POST',
+          body: formData,
+          headers: {
+              'X-CSRFToken': '{{ csrf_token }}'
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.status === 'success') {
+              // Handle successful save
+              console.log('Form data saved successfully');
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+  });
+  </script>
+
+</html>  
+

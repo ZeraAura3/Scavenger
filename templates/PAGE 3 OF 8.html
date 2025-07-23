@@ -1,0 +1,1995 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- saved from url=(0076)https://www.iitrpr.ac.in/facultyrecruitment/faculty-recruitment-dbme-06-2023 -->
+<html lang="en" dir="ltr"
+  prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# "
+  style=""
+  class=" inputtypes-search inputtypes-tel inputtypes-url inputtypes-email no-inputtypes-datetime inputtypes-date inputtypes-month inputtypes-week inputtypes-time inputtypes-datetime-local inputtypes-number inputtypes-range inputtypes-color details no-touchevents js">
+<plasmo-csui><template shadowrootmode="open">
+    <style>
+      *,
+      :before,
+      :after {
+        box-sizing: border-box
+      }
+
+      .overlay-container {
+        background: #102239e6;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        position: fixed
+      }
+
+      .overlay-progress {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        display: flex
+      }
+
+      .overlay-progress-status {
+        flex-direction: column;
+        justify-content: center;
+        display: flex
+      }
+
+      .overlay-progress-text {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-progress-bar {
+        position: relative
+      }
+
+      .overlay-progress-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(13px, 13px)
+      }
+
+      .overlay-complete-save-button {
+        background: #8243ea;
+        border: 0;
+        border-radius: 60px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        display: inline-flex
+      }
+
+      .overlay-complete-save-button:active,
+      .overlay-complete-save-button:hover {
+        background: #6635b8
+      }
+
+      .overlay-complete-save-button-text {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.32px;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px
+      }
+
+      .overlay-complete {
+        flex-direction: column;
+        align-items: center;
+        gap: 64px;
+        width: 1064px;
+        max-width: 80%;
+        padding-top: 24px;
+        display: flex
+      }
+
+      .overlay-complete-logo {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        display: flex
+      }
+
+      .overlay-complete-logo-img {
+        width: 80px;
+        height: 80px
+      }
+
+      .overlay-complete-logo-subtext {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-complete-save {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        gap: 40px;
+        width: 100%;
+        max-width: 420px;
+        display: flex
+      }
+
+      .overlay-complete-save-location {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        display: flex
+      }
+
+      .overlay-complete-save-location-title {
+        color: #fff;
+        letter-spacing: -.28px;
+        margin-left: 16px;
+        font-family: Kodchasan, serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-complete-save-location-subtext {
+        color: #fff;
+        letter-spacing: -.24px;
+        margin-left: 16px;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .overlay-complete-image-container {
+        background-color: #fff;
+        border-radius: 10px;
+        width: 400px;
+        height: 220px;
+        max-height: 220px;
+        display: flex;
+        overflow: hidden;
+        box-shadow: 0 8px 20px #00000026
+      }
+
+      .overlay-complete-image {
+        max-width: 100%;
+        margin: auto
+      }
+
+      .overlay-error {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        max-width: 400px;
+        display: flex
+      }
+
+      .overlay-error-status {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        display: flex
+      }
+
+      .overlay-error-logo {
+        width: 80px;
+        height: 80px
+      }
+
+      .overlay-error-text-title {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.4px;
+        font-family: Kodchasan, serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .overlay-error-text-message {
+        color: #fff;
+        text-align: center;
+        letter-spacing: -.24px;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .overlay-error-actions {
+        flex-direction: row;
+        gap: 8px;
+        display: flex
+      }
+
+      .overlay-error-support-button {
+        cursor: pointer;
+        background: #fff;
+        border: 0;
+        border-radius: 60px;
+        padding: 10px 20px;
+        text-decoration: none
+      }
+
+      .overlay-error-support-button-text {
+        color: #102239;
+        text-align: center;
+        letter-spacing: -.32px;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px
+      }
+
+      .overlay-close-button {
+        position: fixed;
+        top: 20px;
+        left: 20px
+      }
+
+      .overlay-complete-save-error {
+        background: #5a2636;
+        border-radius: 7px;
+        margin-top: -22px;
+        padding: 10px 14px
+      }
+
+      .overlay-complete-save-error-text {
+        color: #ff77b1;
+        font-family: Kodchasan, serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal
+      }
+
+      .overlay-complete-data {
+        justify-content: center;
+        align-items: center;
+        gap: 10vw;
+        display: flex
+      }
+
+      .overlay-complete-info {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        display: flex
+      }
+
+      .dropdown-wrapper {
+        background: #fff;
+        border-radius: 8px
+      }
+
+      .dropdown-container {
+        background: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        position: relative;
+        overflow-y: auto
+      }
+
+      .dropdown-overlay {
+        z-index: auto;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0
+      }
+
+      .dropdown-open-container {
+        z-index: 200;
+        background: #fff;
+        border-radius: 8px;
+        width: 100%;
+        position: absolute;
+        top: 64px
+      }
+
+      .dropdown-item-container {
+        cursor: pointer;
+        background: #fff;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex
+      }
+
+      .dropdown-item-container:hover {
+        background: #e8eaee
+      }
+
+      .dropdown-item-name {
+        color: #102239;
+        letter-spacing: -.32px;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-container {
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex;
+        position: sticky;
+        bottom: 0
+      }
+
+      .dropdown-create-title {
+        color: #10223966;
+        letter-spacing: -.32px;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-container-open {
+        cursor: pointer;
+        display: contents
+      }
+
+      .dropdown-create-container-close {
+        display: contents
+      }
+
+      .dropdown-create-input {
+        caret-color: #102239;
+        color: #102239;
+        letter-spacing: -.32px;
+        background: 0 0;
+        border: 0;
+        outline: none;
+        flex: 1 0 0;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-create-input::placeholder {
+        letter-spacing: -.32px;
+        color: #10223933;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .tags-dropdown-container {
+        background: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        position: relative;
+        overflow-y: visible
+      }
+
+      .tags-dropdown-dropdown {
+        z-index: 100;
+        background-color: #fff;
+        border-radius: 8px;
+        flex-direction: column;
+        gap: 14px;
+        max-height: 400px;
+        padding: 12px;
+        display: flex;
+        position: absolute;
+        top: 64px;
+        overflow-y: scroll
+      }
+
+      .tags-dropdown-section {
+        flex-direction: column;
+        gap: 14px;
+        display: flex
+      }
+
+      .tags-dropdown-section-title {
+        letter-spacing: -.32px;
+        color: #00000080;
+        font-family: Kodchasan, serif;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
+      }
+
+      .tags-dropdown-section-value {
+        letter-spacing: -.32px;
+        color: #000;
+        border: 1px solid #dfe1e6;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: Kodchasan, serif;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .tags-dropdown-section-values {
+        flex-wrap: wrap;
+        gap: 8px;
+        display: flex
+      }
+
+      .tags-dropdown-overlay {
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0
+      }
+
+      .dropdown-summary-container {
+        background: #fff;
+        border-radius: 8px;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        display: flex
+      }
+
+      .dropdown-summary-placeholder {
+        letter-spacing: -.32px;
+        color: #102239;
+        font-family: Kodchasan, serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .dropdown-summary-chips-container {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        display: flex
+      }
+
+      .dropdown-summary-chip {
+        letter-spacing: -.32px;
+        color: #fff;
+        background-color: #2f2f2f;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-family: Kodchasan, serif;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal
+      }
+
+      .loader-dots {
+        justify-content: center;
+        align-items: center;
+        width: 102.74px;
+        height: 20px;
+        display: flex
+      }
+
+      .loader-dots span {
+        background: #fff;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        margin: 0 2px 0 0;
+        transition: all 6s;
+        animation: 2s infinite wave;
+        display: inline-block
+      }
+
+      .loader-dots span:first-child {
+        animation-delay: 0s
+      }
+
+      .loader-dots span:nth-child(2) {
+        animation-delay: .1s
+      }
+
+      .loader-dots span:nth-child(3) {
+        animation-delay: .2s
+      }
+
+      @keyframes wave {
+
+        0%,
+        40%,
+        to {
+          transform: translate(0)
+        }
+
+        10% {
+          transform: translateY(-15px)
+        }
+      }
+
+    </style>
+    <div id="plasmo-shadow-container" style="z-index: 2147483647; position: relative;">
+      <div id="plasmo-overlay-0" class="plasmo-csui-container"
+        style="display: flex; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+  </template></plasmo-csui>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <noscript>
+    <meta http-equiv="Refresh"
+      content="0; URL=/facultyrecruitment/big_pipe/no-js?destination=/facultyrecruitment/faculty-recruitment-dbme-06-2023" />
+  </noscript>
+  <meta name="Generator" >
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="" type="image/vnd.microsoft.icon">
+
+  <title>Engineering Faculty Recruitment Form (Advertisement No. ) | facultyrecruitment</title>
+  <link rel="stylesheet" media="all" href="{% static 'css/css_CAKewM4g5p9m-yklJzS-RDai2skCekWdEaxkoJb6GJc.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/progress-tracker.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/css_CDNdYFZc_u1hKAYHmmWMeegy34XIVhWgX4k2nWfKzZ0.css' %}">
+  <link rel="stylesheet" media="all" href="{% static 'css/css_a-X1G4vJLNTL1vcsd9Xk3DecS6qs6H0AaguWksE0o68.css' %}">
+  <link rel="stylesheet" media="print" href="{% static 'css/css_Z5jMg7P_bjcW9iUzujI7oaechMyxQTUqZhHJ_aYSq04.css' %}">
+
+  <script src="{% static 'js/modernizr.min.js' %}"></script>
+  <script src="{% static 'js/modernizr-additional-tests.js' %}"></script>
+
+
+</head>
+
+<body class="layout-no-sidebars user-logged-in path-webform" data-once="form-single-submit detailsAria">
+  <a href="" class="visually-hidden focusable skip-link">
+    Skip to main content
+  </a>
+
+  <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas="">
+    <div id="page-wrapper">
+      <div id="page">
+        <header id="header" class="header" role="banner">
+          <div class="section layout-container clearfix">
+            <div class="region region-secondary-menu">
+
+              <nav role="navigation" aria-labelledby="block-bartik-account-menu-menu" id="block-bartik-account-menu"
+                class="block block-menu navigation menu--account">
+
+                <h2 class="visually-hidden" id="block-bartik-account-menu-menu">User account menu</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-account-menu"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-account-menu"></div>
+                  <a class="menu-toggle" href="">Show — User account menu</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — User account menu</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="5 account.html">My account</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="1 Before Login.html">Log out</a>
+                    </li>
+                  </ul>
+
+
+
+                </div>
+              </nav>
+
+            </div>
+
+            <div class="clearfix region region-header">
+              <div id="block-bartik-branding"
+                class="clearfix site-branding block block-system block-system-branding-block">
+
+
+                <a href="" rel="home" class="site-branding__logo">
+                  <img src="{% static 'img/logo_1.png' %}" alt="Logo">
+                </a>
+                <div class="site-branding__text">
+                  <div class="site-branding__name">
+                    <a href="4 faculty.html" rel="home">Faculty Recruitment</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="region region-primary-menu">
+
+              <nav role="navigation" aria-labelledby="block-bartik-main-menu-menu" id="block-bartik-main-menu"
+                class="block block-menu navigation menu--main">
+
+                <h2 class="visually-hidden" id="block-bartik-main-menu-menu">Main navigation</h2>
+
+
+                <div class="content">
+                  <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-main-menu"></div>
+                  <div class="menu-toggle-target" id="hide-block-bartik-main-menu"></div>
+                  <a class="menu-toggle" href="">Show — Main navigation</a>
+                  <a class="menu-toggle menu-toggle--hide" href="">Hide — Main navigation</a>
+
+                  <ul class="clearfix menu">
+                    <li class="menu-item">
+                      <a href="2 After Login.html" class="is-active">Home</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="3 Rolling.html">Rolling Adv.</a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="4 faculty.html">Faculty Recruitment Adv.</a>
+                    </li>
+                  </ul>
+
+
+
+
+                </div>
+              </nav>
+
+            </div>
+
+          </div>
+        </header>
+        <div class="highlighted">
+          <aside class="layout-container section clearfix" role="complementary">
+            <div class="region region-highlighted">
+              <div class="hidden"></div>
+
+            </div>
+
+          </aside>
+        </div>
+        <div id="main-wrapper" class="layout-main-wrapper layout-container clearfix">
+          <div id="main" class="layout-main clearfix">
+            <div class="region region-breadcrumb">
+              <div id="block-bartik-breadcrumbs" class="block block-system block-system-breadcrumb-block">
+
+
+                <div class="content">
+                  <nav class="breadcrumb" role="navigation" aria-labelledby="system-breadcrumb">
+                    <h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+                    <ol>
+                      <li>
+                        <a href="2 After Login.html">Home</a>
+                      </li>
+                    </ol>
+                  </nav>
+
+                </div>
+              </div>
+
+            </div>
+
+            <main id="content" class="column main-content" role="main">
+              <section class="section">
+                <a id="main-content" tabindex="-1"></a>
+                <div class="region region-content">
+                  <div id="block-bartik-page-title" class="block block-core block-page-title-block">
+
+
+                    <div class="content">
+
+
+                      <h1 class="title page-title">Faculty Recruitment Form</h1>
+
+
+                    </div>
+                  </div>
+                  <div id="block-bartik-content" class="block block-system block-system-main-block">
+
+
+                    <div class="content">
+                      <form
+                        class="webform-submission-form webform-submission-add-form webform-submission-faculty-recruitment-dbme-06-2023-form webform-submission-faculty-recruitment-dbme-06-2023-add-form js-webform-unsaved js-webform-submit-once js-webform-disable-autosubmit js-webform-details-toggle webform-details-toggle"
+                        autocomplete="off" data-webform-unsaved=""
+                        enctype="multipart/form-data" action="{% url 'save_draft1' %}" method="post"
+                        id="webform-submission-faculty-recruitment-dbme-06-2023-add-form" accept-charset="UTF-8"
+                        data-once="form-updated"
+                        >
+
+                        {% csrf_token %}
+
+                        <div class="webform-progress">
+
+
+                          <ul class="webform-progress-tracker progress-tracker progress-tracker--center"
+                            data-webform-progress-steps="">
+                            <li data-webform-page="basic_details" title="Basic Details"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="1"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Basic Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="communication_details" title="Communication Details"
+                              class="progress-step is-complete">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="2"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Completed</span>
+                                  Communication Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="education_details" title="Education Details"
+                              class="progress-step is-active">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="3"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state="">Current</span>
+                                  Education Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="experience_details" title="Post PhD Experience"
+                              class="progress-step ">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="4"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Post PhD Experience
+                                </div>
+                              </div>
+                            </li>
+                            <!-- <li data-webform-page="pre_phd_experience" title="Pre PhD Experience " class="progress-step">
+  <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link="" data-text="5"></div>
+  <div class="progress-text">
+  <div class="progress-title" data-webform-progress-link="">
+  <span class="visually-hidden" data-webform-progress-state=""></span>
+  Pre PhD Experience 
+  </div>
+  </div>
+  </li> -->
+                            <li data-webform-page="publications_patents_others_details"
+                              title="Publications/Patents/Others Details" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="5"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Publications/Patents/Others Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="general_information" title="General Details" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="6"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  General Details
+                                </div>
+                              </div>
+                            </li>
+                            <li data-webform-page="webform_confirmation" title="Complete" class="progress-step">
+                              <div class="progress-marker" data-webform-progress-step="" data-webform-progress-link=""
+                                data-text="7"></div>
+                              <div class="progress-text">
+                                <div class="progress-title" data-webform-progress-link="">
+                                  <span class="visually-hidden" data-webform-progress-state=""></span>
+                                  Complete
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+
+
+
+
+                        </div>
+                        <div data-webform-key="education_details" id="edit-education-details" class="js-form-wrapper form-wrapper">
+                          <div
+                            class="js-form-item form-item js-form-type-webform-table form-type-webform-table js-form-item-phd-detail-table form-item-phd-detail-table">
+                            <label>PhD Detail</label>
+                            <div class="tableresponsive-toggle-columns"><button type="button"
+                                class="link tableresponsive-toggle"
+                                title="Show table cells that were hidden to make the table fit within a small screen."
+                                style="display: none;">Hide lower priority columns</button></div>
+                            <table class="webform-table responsive-enabled"
+                              id="edit-phd-detail-table" data-striping="1" data-once="tableresponsive">
+
+
+                              <thead>
+                                <tr>
+                                  <th>Qualification</th>
+                                  <th>University / Institute</th>
+                                  <th>Discipline</th>
+                                  <th>Mode</th>
+                                  <th>Grade Type</th>
+                                  <th>%age/CGPA</th>
+                                  <th>Start date of PhD</th>
+                                  <th>End date of PhD</th>
+                                  <th>Upload Degree/DMC</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr class="webform-table-row odd">
+                                  <td class="webform-readonly">
+                                    <div
+                                      class="webform-readonly js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-doctrate-degree form-item-doctrate-degree form-no-label">
+                                      <input autocomplete="off" readonly="readonly"
+                                        type="text"
+                                        id="edit-doctrate-degree" name="doctrate_degree" value="PhD" size="60"
+                                        maxlength="255" class="form-text required" required="required"
+                                        aria-required="true">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-universtiy-institue-phd form-item-universtiy-institue-phd form-no-label">
+                                      <input autocomplete="" type="text" id="edit-universtiy-institue-phd" name="university_institute_phd"
+                                        value="" size="60" maxlength="255" class="form-text required"
+                                        required="required" aria-required="true">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-discipline-phd form-item-discipline-phd form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text required"
+                                        type="text" id="edit-discipline-phd"
+                                        name="discipline_phd" value="" size="60" maxlength="255" required="required"
+                                        aria-required="true" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-phd-mode form-item-phd-mode form-no-label">
+                                      <select id="edit-phd-mode" name="phd_mode"
+                                        class="form-select required" required="required" aria-required="true">
+                                        <option value="" selected="selected">- Select -</option>
+                                        <option value="REGULAR">REGULAR</option>
+                                        <option value="PART-TIME">PART-TIME</option>
+                                        <option value="DISTANCE">DISTANCE</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type form-item-grade-type form-no-label">
+                                      <select id="edit-grade-type"
+                                        name="grade_type" class="form-select required" required="required"
+                                        aria-required="true">
+                                        <option value="" selected="selected">- Select -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                        <option value="None Awarded">None Awarded</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-phd form-item-total-percentage-cgpa-phd form-no-label">
+                                      <input autocomplete="" type="number" min="0" id="edit-total-percentage-cgpa-phd" name="total_percentage_cgpa_phd"
+                                        value="" size="60" maxlength="255" class="form-text required"
+                                        required="required" aria-required="true">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-date form-type-date js-form-item-start-date-phd form-item-start-date-phd form-no-label">
+                                      <input type="date" id="edit-start-date-phd" name="start_date_phd"
+                                        value="" class="form-date required" required="required" aria-required="true">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-date form-type-date js-form-item-end-date-phd form-item-end-date-phd form-no-label">
+                                      <input type="date" id="edit-end-date-phd" name="end_date_phd"
+                                        value="" class="form-date required" required="required" aria-required="true">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--3">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-phd-doc form-item-phd-doc form-no-label">
+
+                                        <div id="edit-phd-doc" class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-phd-doc-upload" name="files[phd_doc]" size="22"
+                                            class="form-file" required = "required" >
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit"
+                                            id="edit-phd-doc-upload-button" name="phd_doc_upload_button" value="Upload">
+                                          <input type="hidden"
+                                            name="phd_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-phd-doc--description" class="webform-element-description">One
+                                            file only.<br>3 MB limit.<br>Allowed types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress1" value="0" max="100" style="display:none;"></progress>                          
+
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                          </div>
+                          <div
+                            class="js-form-item form-item js-form-type-webform-table form-type-webform-table js-form-item-qualification-details form-item-qualification-details">
+                            <label>Qualification Details</label>
+                            <div class="tableresponsive-toggle-columns"><button type="button"
+                                class="link tableresponsive-toggle"
+                                title="Show table cells that were hidden to make the table fit within a small screen."
+                                style="display: none;">Hide lower priority columns</button></div>
+                            <table class="webform-table responsive-enabled" id="edit-qualification-details" data-striping="1"
+                              data-once="tableresponsive">
+
+
+                              <thead>
+                                <tr>
+                                  <th>Qualification</th>
+                                  <th>Board/University</th>
+                                  <th>Duration</th>
+                                  <th>Passing year</th>
+                                  <th>Grade Type</th>
+                                  <th>%age/CGPA</th>
+                                  <th>Discipline/Subject</th>
+                                  <th>upload degree/DMC</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr class="webform-table-row odd">
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-qualification-pg form-item-qualification-pg">
+                                      <label for="edit-qualification-pg">Name of Master Degree</label>
+                                      <input autocomplete="" type="text"
+                                        id="edit-qualification-pg" name="qualification_pg" value="" size="60"
+                                        maxlength="255" class="form-text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-bord-universtiy-pg form-item-bord-universtiy-pg form-no-label">
+                                      <input autocomplete="" type="text"
+                                        id="edit-bord-universtiy-pg" name="board_universtiy_pg" value="" size="60"
+                                        maxlength="255" class="form-text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-duration-pg form-item-duration-pg form-no-label">
+                                      <input autocomplete="" type="text"
+                                        id="edit-duration-pg" name="duration_pg" value="" size="60" maxlength="255"
+                                        class="form-text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-passing-year-pg form-item-passing-year-pg form-no-label">
+                                      <input autocomplete="" type="number" min="0" 
+                                        id="edit-passing-year-pg" name="passing_year_pg" value="" size="60"
+                                        maxlength="255" class="form-text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type-pg form-item-grade-type-pg form-no-label">
+                                      <select id="edit-grade-type-pg"
+                                        name="grade_type_pg" class="form-select">
+                                        <option value="" selected="selected">- None -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-pg form-item-total-percentage-cgpa-pg form-no-label">
+                                      <input autocomplete="" type="number" min="0" id="edit-total-percentage-cgpa-pg" name="total_percentage_cgpa_pg"
+                                        value="" size="60" maxlength="255" class="form-text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subjects-pg form-item-subjects-pg form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text" type="text" id="edit-subjects-pg" name="subjects_pg" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--4">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-pg-doc form-item-pg-doc form-no-label">
+
+                                        <div id="edit-pg-doc" class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-pg-doc-upload" name="files[pg_doc]" size="22"
+                                            class="form-file">
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit" id="edit-pg-doc-upload-button"
+                                            name="pg_doc_upload_button" value="Upload">
+                                          <input type="hidden"
+                                            name="pg_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-pg-doc--description" class="webform-element-description">One
+                                            file only.<br>3 MB limit.<br>Allowed types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress2" value="0" max="100" style="display:none;"></progress> 
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr class="webform-table-row even">
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-qualification-graduation form-item-qualification-graduation">
+                                      <label for="edit-qualification-graduation">Name of Graduation Degree</label>
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-qualification-graduation" name="qualification_graduation" value=""
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-bord-universtiy-graduation form-item-bord-universtiy-graduation form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-bord-universtiy-graduation" name="board_universtiy_graduation" value=""
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-duration-graduation form-item-duration-graduation form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-duration-graduation" name="duration_graduation" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-passing-year-graduation form-item-passing-year-graduation form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-passing-year-graduation" name="passing_year_graduation" value=""
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type-graduation form-item-grade-type-graduation form-no-label">
+                                      <select id="edit-grade-type-graduation" name="grade_type_graduation"
+                                        class="form-select">
+                                        <option value="" selected="selected">- None -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-graduation form-item-total-percentage-cgpa-graduation form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-total-percentage-cgpa-graduation"
+                                        name="total_percentage_cgpa_graduation" value="" size="60" maxlength="255"
+                                        inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subjects-graduation form-item-subjects-graduation form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-subjects-graduation" name="subjects_graduation" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--5">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-graduation-doc form-item-graduation-doc form-no-label">
+
+                                        <div id="edit-graduation-doc" class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-graduation-doc-upload" name="files[graduation_doc]" size="22"
+                                            class="form-file" >
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit"
+                                            id="edit-graduation-doc-upload-button" name="graduation_doc_upload_button"
+                                            value="Upload" >
+                                          <input type="hidden"
+                                            name="graduation_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-graduation-doc--description"
+                                            class="webform-element-description">One file only.<br>3 MB limit.<br>Allowed
+                                            types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress3" value="0" max="100" style="display:none;"></progress> 
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr class="webform-table-row odd">
+                                  <td class="webform-readonly">
+                                    <div
+                                      class="webform-readonly js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-qualification-12th form-item-qualification-12th form-no-label">
+                                      <input autocomplete="" readonly="readonly"
+                                        data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-qualification-12th" name="qualification_12th" value="Intermediate/12th"
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-bord-universtiy-12th form-item-bord-universtiy-12th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-bord-universtiy-12th" name="board_universtiy_12th" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-duration-12th form-item-duration-12th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text" id="edit-duration-12th"
+                                        name="duration_12th" value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-passing-year-12th form-item-passing-year-12th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-passing-year-12th" name="passing_year_12th" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type-12th form-item-grade-type-12th form-no-label">
+                                      <select id="edit-grade-type-12th"
+                                        name="grade_type_12th" class="form-select">
+                                        <option value="" selected="selected">- None -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-12th form-item-total-percentage-cgpa-12th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-total-percentage-cgpa-12th" name="total_percentage_cgpa_12th" value=""
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subjects-12th form-item-subjects-12th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text" type="text" id="edit-subjects-12th"
+                                        name="subjects_12th" value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--6">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-_2th-doc form-item-_2th-doc form-no-label">
+
+                                        <div id="edit-12th-doc" class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-12th-doc-upload" name="files[12th_doc]" size="22"
+                                            class="form-file" >
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit"
+                                            id="edit-12th-doc-upload-button" name="12th_doc_upload_button"
+                                            value="Upload">
+                                          <input type="hidden"
+                                            name="12th_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-12th-doc--description" class="webform-element-description">One
+                                            file only.<br>3 MB limit.<br>Allowed types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress4" value="0" max="100" style="display:none;"></progress> 
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr class="webform-table-row even">
+                                  <td class="webform-readonly">
+                                    <div
+                                      class="webform-readonly js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-qualification-10th form-item-qualification-10th form-no-label">
+                                      <input autocomplete="" readonly="readonly"
+                                        data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-qualification-10th" name="qualification_10th" value="Matric/10th"
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-bord-universtiy-10th form-item-bord-universtiy-10th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-bord-universtiy-10th" name="board_universtiy_10th" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-duration-10th form-item-duration-10th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text" id="edit-duration-10th"
+                                        name="duration_10th" value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-passing-year-10th form-item-passing-year-10th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-passing-year-10th" name="passing_year_10th" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type-10th form-item-grade-type-10th form-no-label">
+                                      <select id="edit-grade-type-10th"
+                                        name="grade_type_10th" class="form-select">
+                                        <option value="" selected="selected">- None -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-10th form-item-total-percentage-cgpa-10th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-total-percentage-cgpa-10th" name="total_percentage_cgpa_10th" value=""
+                                        size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subjects-10th form-item-subjects-10th form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text" id="edit-subjects-10th"
+                                        name="subjects_10th" value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--7">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-_0th-doc form-item-_0th-doc form-no-label">
+
+                                        <div id="edit-10th-doc" class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-10th-doc-upload" name="files[10th_doc]" size="22"
+                                            class="form-file" >
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit"
+                                            id="edit-10th-doc-upload-button" name="10th_doc_upload_button"
+                                            value="Upload">
+                                          <input type="hidden"
+                                            name="10th_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-10th-doc--description" class="webform-element-description">One
+                                            file only.<br>3 MB limit.<br>Allowed types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress5" value="0" max="100" style="display:none;"></progress> 
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr class="webform-table-row odd">
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-qualification-other1 form-item-qualification-other1">
+                                      <label for="edit-qualification-other1">Other qualification1 (if any)</label>
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-qualification-other1" name="qualification_other1" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-bord-universtiy-qualification-other1 form-item-bord-universtiy-qualification-other1 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-bord-universtiy-qualification-other1"
+                                        name="board_universtiy_qualification_other1" value="" size="60" maxlength="255"
+                                        inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-duration-qualification-other1 form-item-duration-qualification-other1 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-duration-qualification-other1" name="duration_qualification_other1"
+                                        value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-passing-year-qualification-other1 form-item-passing-year-qualification-other1 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-passing-year-qualification-other1"
+                                        name="passing_year_qualification_other1" value="" size="60" maxlength="255"
+                                        inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type-qualification-other1 form-item-grade-type-qualification-other1 form-no-label">
+                                      <select id="edit-grade-type-qualification-other1" name="grade_type_qualification_other1"
+                                        class="form-select">
+                                        <option value="" selected="selected">- None -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-qualification-other1 form-item-total-percentage-cgpa-qualification-other1 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0"  id="edit-total-percentage-cgpa-qualification-other1"
+                                        name="total_percentage_cgpa_qualification_other1" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subjects-qualification-other1 form-item-subjects-qualification-other1 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-subjects-qualification-other1" name="subjects_qualification_other1"
+                                        value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--8">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-qualification-other1-doc form-item-qualification-other1-doc form-no-label">
+
+                                        <div id="edit-qualification-other1-doc"
+                                          class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-qualification-other1-doc-upload"
+                                            name="files[qualification_other1_doc]" size="22"
+                                            class="form-file" >
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit"
+                                            id="edit-qualification-other1-doc-upload-button"
+                                            name="qualification_other1_doc_upload_button" value="Upload"
+                                            >
+                                          <input type="hidden"
+                                            name="qualification_other1_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-qualification-other1-doc--description"
+                                            class="webform-element-description">One file only.<br>3 MB limit.<br>Allowed
+                                            types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress7" value="0" max="100" style="display:none;"></progress> 
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr class="webform-table-row even">
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-qualification-other2 form-item-qualification-other2">
+                                      <label for="edit-qualification-other2">Other qualification2 (if any)</label>
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-qualification-other2" name="qualification_other2" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-bord-universtiy-qualification-other2 form-item-bord-universtiy-qualification-other2 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-bord-universtiy-qualification-other2"
+                                        name="board_universtiy_qualification_other2" value="" size="60" maxlength="255"
+                                        inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-duration-qualification-other2 form-item-duration-qualification-other2 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-duration-qualification-other2" name="duration_qualification_other2"
+                                        value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-passing-year-qualification-other2 form-item-passing-year-qualification-other2 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" 
+                                        id="edit-passing-year-qualification-other2"
+                                        name="passing_year_qualification_other2" value="" size="60" maxlength="255"
+                                        inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-select form-type-select js-form-item-grade-type-qualification-other2 form-item-grade-type-qualification-other2 form-no-label">
+                                      <select id="edit-grade-type-qualification-other2" name="grade_type_qualification_other2"
+                                        class="form-select">
+                                        <option value="" selected="selected">- None -</option>
+                                        <option value="%age">%age</option>
+                                        <option value="CGPA">CGPA</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-total-percentage-cgpa-qualification-other2 form-item-total-percentage-cgpa-qualification-other2 form-no-label">
+                                      <input autocomplete="" data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="number" min="0" id="edit-total-percentage-cgpa-qualification-other2"
+                                        name="total_percentage_cgpa_qualification_other2" value="" size="60"
+                                        maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div
+                                      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subjects-qualification-other2 form-item-subjects-qualification-other2 form-no-label">
+                                      <input data-inputmask="&#39;casing&#39;: &#39;upper&#39;"
+                                        class="js-webform-input-mask form-text"
+                                        type="text"
+                                        id="edit-subjects-qualification-other2" name="subjects_qualification_other2"
+                                        value="" size="60" maxlength="255" inputmode="text">
+
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div id="ajax-wrapper--9">
+                                      <div
+                                        class="js-form-item form-item js-form-type-managed-file form-type-managed-file js-form-item-qualification-other2-doc form-item-qualification-other2-doc form-no-label">
+
+                                        <div id="edit-qualification-other2-doc"
+                                          class="form-managed-file">
+                                          <input type="file"
+                                            id="edit-qualification-other2-doc-upload"
+                                            name="files[qualification_other2_doc]" size="22"
+                                            class="form-file" >
+                                          <input class="js-hide button js-form-submit form-submit"
+                                            formnovalidate="formnovalidate" type="submit"
+                                            id="edit-qualification-other2-doc-upload-button"
+                                            name="qualification_other2_doc_upload_button" value="Upload"
+                                            >
+                                          <input type="hidden"
+                                            name="qualification_other2_doc[fids]">
+
+                                        </div>
+
+                                        <div class="description">
+                                          <div id="edit-qualification-other2-doc--description"
+                                            class="webform-element-description">One file only.<br>3 MB limit.<br>Allowed
+                                            types: pdf.
+                                          </div>
+                                          <progress id="uploadProgress7" value="0" max="100" style="display:none;"></progress> 
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                          </div>
+                        </div>
+
+
+                        <div
+                        class="webform-element--title-inline js-form-item form-item js-form-type-select form-type-select js-form-item-academicgap form-item-academicgap">
+                        <label for="edit-academicgap"
+                          class="js-form-required form-required">Did you take any academic gap ? :</label>
+                        <select id="edit-academicgap" name="academicgap" class="form-select" required="required"
+                          aria-required="true" fdprocessedid="0jm0ee">
+                          <option value="" selected="selected">- Select -</option>
+                          <option value="INDIAN">NO</option>
+                          <option value="FOREIGN">YES</option>
+                        </select>
+                      </div>
+                      <div
+                      class="webform-element--title-inline js-webform-states-hidden js-form-item form-item js-form-type-select form-type-select js-form-item-are-you-pio-oci-none form-item-are-you-pio-oci-none"
+                      style="display: none;">
+                        <label for="edit-are-you-pio-oci-none">Academic Gap from : </label>
+                          <input type="date" id="edit-academic-gap-from" name="academicGapFrom" value="" data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-faculty-recruitment-dbme-06-2023-add-form :input[name=\u0022academicgap\u0022]&quot;:{&quot;value&quot;:&quot;FOREIGN&quot;}},&quot;required&quot;:{&quot;.webform-submission-faculty-recruitment-dbme-06-2023-add-form :input[name=\u0022academicgap\u0022]&quot;:{&quot;value&quot;:&quot;FOREIGN&quot;}}}"
+                          class="form-select" required="required" aria-required="true">
+                      </div>
+                      <div
+                        class="webform-element--title-inline js-webform-states-hidden js-form-item form-item js-form-type-select form-type-select js-form-item-appear-inperson-or-skype form-item-appear-inperson-or-skype"
+                        style="display: none;">
+                        <label for="edit-appear-inperson-or-skype">Academic Gap till : </label>
+                          <input type="date" id="edit-academic-gap-to" name="academicGapTill" value="" data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-faculty-recruitment-dbme-06-2023-add-form :input[name=\u0022academicgap\u0022]&quot;:{&quot;value&quot;:&quot;FOREIGN&quot;}},&quot;required&quot;:{&quot;.webform-submission-faculty-recruitment-dbme-06-2023-add-form :input[name=\u0022academicgap\u0022]&quot;:{&quot;value&quot;:&quot;FOREIGN&quot;}}}"
+                          class="form-select" required="required" aria-required="true">
+                      </div>
+                      <div
+                        class="webform-element--title-inline js-webform-states-hidden js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-skype-id form-item-skype-id"
+                        style="display: none;">
+                        <label for="edit-skype-id">Reason for the Academic Gap : </label>
+                        <input autocomplete="off" type="text" id="edit-skype-id" name="academicGapReason" value=""
+                          size="60" maxlength="255" class="form-text"
+                          data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-faculty-recruitment-dbme-06-2023-add-form :input[name=\u0022academicgap\u0022]&quot;:{&quot;value&quot;:&quot;FOREIGN&quot;}},&quot;required&quot;:{&quot;.webform-submission-faculty-recruitment-dbme-06-2023-add-form :input[name=\u0022academicgap\u0022]&quot;:{&quot;value&quot;:&quot;FOREIGN&quot;}}}">
+
+                      </div>
+
+                        <div 
+                          class="form-actions webform-actions js-form-wrapper form-wrapper" id="edit-actions"><input
+                            formnovalidate="formnovalidate"
+                            class="webform-button--draft button js-form-submit form-submit"
+                            type="submit" id="edit-actions-draft" name="op"
+                            value="save_draft3">
+                          <input formnovalidate="formnovalidate"
+                            class="webform-button--previous button js-form-submit form-submit"
+                            type="submit" id="edit-actions-wizard-prev"
+                            name="op" value="&lt; Previous">
+                          <input
+                            class="webform-button--next button js-form-submit form-submit js-webform-submit-clicked"
+                            type="submit" id="edit-actions-wizard-next"
+                            name="op" value="Next &gt;">
+
+                          <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                              // Redirect "Previous" button
+                              document.getElementById('edit-actions-wizard-prev').onclick = function (event) {
+                                event.preventDefault(); // Prevent default submission
+                                window.location.href = 'PAGE 2 OF 8.html'; // Replace with the desired Previous page URL
+                              };
+
+                              // Redirect "Next" button
+                              document.getElementById('edit-actions-wizard-next').onclick = function (event) {
+                                event.preventDefault(); // Prevent default submission
+                                window.location.href = 'PAGE 4 OF 8.html'; // Replace with the desired Next page URL
+                              };
+                            });
+                          </script>
+                          <script>
+                            document.querySelector('#edit-phd-doc-upload').addEventListener('change', function () {
+                                const progress = document.getElementById('uploadProgress1');
+                                progress.style.display = 'block'; // Show progress bar
+                                progress.value = 0;
+  
+                                // Example: Simulate progress
+                                const interval = setInterval(() => {
+                                    progress.value += 10;
+                                    if (progress.value >= 100) {
+                                        clearInterval(interval);
+                                        progress.style.display = 'none'; // Hide after complete
+                                    }
+                                }, 500);
+                            });
+                            </script>
+                            <script>
+                              document.querySelector('#edit-pg-doc-upload').addEventListener('change', function () {
+                                  const progress = document.getElementById('uploadProgress2');
+                                  progress.style.display = 'block'; // Show progress bar
+                                  progress.value = 0;
+    
+                                  // Example: Simulate progress
+                                  const interval = setInterval(() => {
+                                      progress.value += 10;
+                                      if (progress.value >= 100) {
+                                          clearInterval(interval);
+                                          progress.style.display = 'none'; // Hide after complete
+                                      }
+                                  }, 500);
+                              });
+                              </script>
+                              <script>
+                                document.querySelector('#edit-graduation-doc-upload').addEventListener('change', function () {
+                                    const progress = document.getElementById('uploadProgress3');
+                                    progress.style.display = 'block'; // Show progress bar
+                                    progress.value = 0;
+      
+                                    // Example: Simulate progress
+                                    const interval = setInterval(() => {
+                                        progress.value += 10;
+                                        if (progress.value >= 100) {
+                                            clearInterval(interval);
+                                            progress.style.display = 'none'; // Hide after complete
+                                        }
+                                    }, 500);
+                                });
+                                </script>
+                                <script>
+                                  document.querySelector('#edit-12th-doc-upload').addEventListener('change', function () {
+                                      const progress = document.getElementById('uploadProgress4');
+                                      progress.style.display = 'block'; // Show progress bar
+                                      progress.value = 0;
+        
+                                      // Example: Simulate progress
+                                      const interval = setInterval(() => {
+                                          progress.value += 10;
+                                          if (progress.value >= 100) {
+                                              clearInterval(interval);
+                                              progress.style.display = 'none'; // Hide after complete
+                                          }
+                                      }, 500);
+                                  });
+                                  </script>
+                                  <script>
+                                    document.querySelector('#edit-10th-doc-upload').addEventListener('change', function () {
+                                        const progress = document.getElementById('uploadProgress5');
+                                        progress.style.display = 'block'; // Show progress bar
+                                        progress.value = 0;
+          
+                                        // Example: Simulate progress
+                                        const interval = setInterval(() => {
+                                            progress.value += 10;
+                                            if (progress.value >= 100) {
+                                                clearInterval(interval);
+                                                progress.style.display = 'none'; // Hide after complete
+                                            }
+                                        }, 500);
+                                    });
+                                    </script>
+                                    <script>
+                                      document.querySelector('#edit-qualification-other1-doc-upload').addEventListener('change', function () {
+                                          const progress = document.getElementById('uploadProgress6');
+                                          progress.style.display = 'block'; // Show progress bar
+                                          progress.value = 0;
+            
+                                          // Example: Simulate progress
+                                          const interval = setInterval(() => {
+                                              progress.value += 10;
+                                              if (progress.value >= 100) {
+                                                  clearInterval(interval);
+                                                  progress.style.display = 'none'; // Hide after complete
+                                              }
+                                          }, 500);
+                                      });
+                                      </script>
+                                      <script>
+                                        document.querySelector('#edit-qualification-other2-doc-upload').addEventListener('change', function () {
+                                            const progress = document.getElementById('uploadProgress7');
+                                            progress.style.display = 'block'; // Show progress bar
+                                            progress.value = 0;
+              
+                                            // Example: Simulate progress
+                                            const interval = setInterval(() => {
+                                                progress.value += 10;
+                                                if (progress.value >= 100) {
+                                                    clearInterval(interval);
+                                                    progress.style.display = 'none'; // Hide after complete
+                                                }
+                                            }, 500);
+                                        });
+                                        </script>
+                        </div>
+                        <input autocomplete="off"
+                          type="hidden"
+                          name="form_build_id" value="form-2dj-SAojcWEXmZ991nKzHv02YvynZZLfDRCwt3UKNFU">
+                        <input
+                          type="hidden" name="form_token" value="Inzpx_hem454wcjdIAo0rZjv77Dqw4USOOipBJSPNzs">
+                        <input type="hidden" name="form_id"
+                          value="webform_submission_faculty_recruitment_dbme_06_2023_add_form">
+
+                      </form>
+
+                    </div>
+                  </div>
+
+                </div>
+
+              </section>
+            </main>
+          </div>
+        </div>
+        <footer class="site-footer">
+          <div class="layout-container">
+            <div class="site-footer__bottom">
+              <div class="region region-footer-fifth">
+
+                <nav role="navigation" aria-labelledby="block-bartik-footer-menu" id="block-bartik-footer"
+                  class="block block-menu navigation menu--footer">
+
+                  <h2 class="visually-hidden" id="block-bartik-footer-menu">Footer menu</h2>
+
+
+                  <div class="content">
+                    <div class="menu-toggle-target menu-toggle-target-show" id="show-block-bartik-footer"></div>
+                    <div class="menu-toggle-target" id="hide-block-bartik-footer"></div>
+                    <a class="menu-toggle" href="">Show — Footer menu</a>
+                    <a class="menu-toggle menu-toggle--hide" href="">Hide — Footer menu</a>
+
+                    <ul class="clearfix menu">
+                      <li class="menu-item">
+                        <a href="contact.html" >Contact</a>
+                      </li>
+                    </ul>
+
+
+
+                  </div>
+                </nav>
+
+
+              </div>
+            </div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script type="application/json"
+    ></script>
+  <script src="{% static 'js/js_OAJtn62El4mCqAfw8Bcr1CdTLtX1EpiKYdigseRB_gA.js' %}"></script>
+  <script src="{% static 'js/jquery.inputmask.min.js' %}"></script>
+  <script src="{% static 'js/js_mLJVqzKbAgsm5z-cEIyNJn9kVFWxnQ3HD6Pd2r_kI8Y.js' %}"></script>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('webform-submission-faculty-recruitment-dbme-06-2023-add-form');
+        const nextButton = document.getElementById('edit-actions-wizard-next');
+        const saveButton = document.getElementById('edit-actions-draft');
+    
+        // Function to save form data
+        function saveFormData() {
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Convert FormData to object
+            formData.forEach((value, key) => {
+                // Skip file inputs as they can't be stored in sessionStorage
+                if (!key.startsWith('files[')) {
+                    data[key] = value;
+                }
+            });
+            
+            // Save to sessionStorage
+            sessionStorage.setItem('facultyFormPage3', JSON.stringify(data));
+        }
+    
+        // Save data when clicking Next
+        nextButton.addEventListener('click', function(e) {
+            saveFormData();
+        });
+    
+        // Save data when clicking Save Draft
+        saveButton.addEventListener('click', function(e) {
+            saveFormData();
+        });
+    
+        // Load saved data when page loads
+        const savedData = sessionStorage.getItem('facultyFormPage3');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            
+            // Fill form fields with saved data
+            Object.keys(data).forEach(key => {
+                const element = form.elements[key];
+                if (element) {
+                    if (element.type === 'select-one') {
+                        element.value = data[key];
+                        // Trigger change event for dependent fields
+                        const event = new Event('change');
+                        element.dispatchEvent(event);
+                    } else if (element.type === 'date') {
+                        element.value = data[key];
+                    } else {
+                        element.value = data[key];
+                    }
+                }
+            });
+    
+            // Handle conditional fields
+            if (data.pwd_category === 'YES') {
+                document.getElementById('edit-pwd-type').style.display = 'block';
+            }
+            
+            if (data.academicgap === 'FOREIGN') {
+                document.querySelector('.js-form-item-are-you-pio-oci-none').style.display = 'block';
+                document.querySelector('.js-form-item-appear-inperson-or-skype').style.display = 'block';
+                document.querySelector('.js-form-item-skype-id').style.display = 'block';
+            }
+        }
+    });
+    </script>
+    <script>
+      document.getElementById('webform-submission-faculty-recruitment-dbme-06-2023-add-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const formData = new FormData(this);
+          
+          fetch('{% url "save_draft3" %}', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-CSRFToken': '{{ csrf_token }}'
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  // Handle successful save
+                  console.log('Form data saved successfully');
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      });
+      </script>
+
+
+  <div class="visually-hidden" aria-live="polite" aria-busy="false"></div>
+</body>
+
+</html>
